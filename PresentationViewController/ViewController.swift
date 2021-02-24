@@ -45,7 +45,7 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
     setUp()
   }
   
-  private var currentInteractiveTransitionController: SwipeDismissalTransitionController?
+  private var currentInteractiveTransitionController: _SwipeDismissalTransitionController?
   
   private func setUp() {
     
@@ -53,7 +53,7 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
     transitioningDelegate = self
     
     let gesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePanGesture))
-    
+        
     gesture.edges = .left
     view.addGestureRecognizer(gesture)
     gesture.delegate = self
@@ -87,16 +87,20 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
   }
   
   public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    SlideInPresentationTransitionController()
+    _PresentationTransitionController()
   }
   
+  public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    _PresentationTransitionController()
+  }
+      
   public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
     
-    SwipeDismissalTransitionController()
+    currentInteractiveTransitionController
   }
 }
 
-final class SlideInPresentationTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
+final class _PresentationTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
   
   func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
     0.23
@@ -124,19 +128,36 @@ final class SlideInPresentationTransitionController: NSObject, UIViewControllerA
     
 }
 
-final class SwipeDismissalTransitionController: NSObject, UIViewControllerAnimatedTransitioning, UIViewControllerInteractiveTransitioning {
-  
-  private weak var currentTransitionContext: UIViewControllerContextTransitioning?
-  private var currentAnimator: UIViewPropertyAnimator?
+final class _DismissalTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
   
   func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-    0.3
+    0.23
   }
   
   func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
     
+    let fromView = transitionContext.view(forKey: .from)!
+                
+    let animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 1) {
+      fromView.transform = .init(translationX: 0, y: fromView.bounds.height)
+    }
+    
+    animator.addCompletion { _ in
+      transitionContext.completeTransition(true)
+      fromView.transform = .identity
+    }
+    
+    animator.startAnimation()
+    
   }
   
+}
+
+final class _SwipeDismissalTransitionController: NSObject, UIViewControllerInteractiveTransitioning {
+  
+  private weak var currentTransitionContext: UIViewControllerContextTransitioning?
+  private var currentAnimator: UIViewPropertyAnimator?
+    
   func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
     
     self.currentTransitionContext = transitionContext
