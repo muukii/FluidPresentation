@@ -35,44 +35,120 @@ final class SampleViewController: PresentationViewController {
 
 open class PresentationViewController: UIViewController, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
   
-  init() {
+  public struct Behavior: Hashable {
+    
+    public enum Trigger: Hashable {
+      case edge
+      case any
+    }
+    
+    public enum StartFrom: Hashable {
+      case left
+      case right
+      case top
+      case bottom
+    }
+        
+    public let trigger: Trigger
+    public let startFrom: StartFrom
+
+    public init(trigger: PresentationViewController.Behavior.Trigger, startFrom: PresentationViewController.Behavior.StartFrom) {
+      self.trigger = trigger
+      self.startFrom = startFrom
+    }
+    
+  }
+  
+  public let behaviors: Set<Behavior>
+  
+  private var isTracking = false
+  
+  init(behaviors: Set<Behavior> = []) {
+    self.behaviors = behaviors
     super.init(nibName: nil, bundle: nil)
     setUp()
   }
   
+  @available(*, unavailable)
   public required init?(coder: NSCoder) {
-    super.init(coder: coder)
-    setUp()
+    fatalError()
   }
   
   private var currentInteractiveTransitionController: _SwipeDismissalTransitionController?
   
   private func setUp() {
     
-    modalPresentationStyle = .currentContext
+    modalPresentationStyle = .overCurrentContext
     transitioningDelegate = self
+                
+    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+    view.addGestureRecognizer(panGesture)
+    panGesture.delegate = self
     
-    let gesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePanGesture))
-        
-    gesture.edges = .left
-    view.addGestureRecognizer(gesture)
-    gesture.delegate = self
+    let edgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgePanGesture))
+    view.addGestureRecognizer(edgeGesture)
+    edgeGesture.delegate = self
+    
+    do {
+      
+      behaviors
+        .filter {
+          $0.trigger == .edge
+        }
+        .forEach {
+          switch $0.startFrom {
+          case .top:
+            edgeGesture.edges.formUnion(.top)
+          case .left:
+            edgeGesture.edges.formUnion(.left)
+          case .right:
+            edgeGesture.edges.formUnion(.right)
+          case .bottom:
+            edgeGesture.edges.formUnion(.bottom)
+          }
+        }
+      
+    }
   }
   
   @objc
-  private func handleEdgePanGesture(_ gesture: UIScreenEdgePanGestureRecognizer) {
+  private func handleEdgePanGesture(_ gesture: UIPanGestureRecognizer) {
     
+//    guard isTracking == false else {
+//      return
+//    }
+
+  }
+  
+  @objc
+  private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        
     switch gesture.state {
     case .began:
+            
       currentInteractiveTransitionController = .init()
       dismiss(animated: true, completion: nil)
+      
     case .changed:
+      
+      let t = view.transform
+      view.transform = .identity
+      let position = gesture.location(in: gesture.view)
+      view.transform = t
+      
+      let progress = position.x / view.bounds.width
+      
+      print(position, progress)
+      currentInteractiveTransitionController?.updateProgress(progress)
+      
       break
     case .possible:
       break
     case .ended:
-      break
+      currentInteractiveTransitionController?.finishInteractiveTransition()
+
     case .cancelled:
+      currentInteractiveTransitionController?.cancelInteractiveTransition()
       break
     case .failed:
       break
@@ -188,9 +264,19 @@ final class _SwipeDismissalTransitionController: NSObject, UIViewControllerInter
     self.currentAnimator = animator
   }
   
-  func cancel() {
+  func finishInteractiveTransition() {
+    currentAnimator?.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+    currentTransitionContext?.finishInteractiveTransition()
+  }
+  
+  func cancelInteractiveTransition() {
+    currentAnimator?.isReversed = true
+    currentAnimator?.continueAnimation(withTimingParameters: nil, durationFactor: 0)
     currentTransitionContext?.cancelInteractiveTransition()
-    
+  }
+  
+  func updateProgress(_ progress: CGFloat) {
+    currentAnimator?.fractionComplete = progress
   }
     
 }
