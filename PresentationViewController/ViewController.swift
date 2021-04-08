@@ -181,15 +181,21 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
       break
     case .began:
 
-      leftToRightDismissalTransitionController = .init()
+      if isBeingDismissed {
 
-      trackingState = .init(
-        viewFrame: view.bounds,
-        beganPoint: gesture.location(in: view),
-        controller: leftToRightDismissalTransitionController!
-      )
+      } else {
 
-      dismiss(animated: true, completion: nil)
+        leftToRightDismissalTransitionController = .init()
+
+        trackingState = .init(
+          viewFrame: view.bounds,
+          beganPoint: gesture.location(in: view),
+          controller: leftToRightDismissalTransitionController!
+        )
+
+        dismiss(animated: true, completion: nil)
+
+      }
 
     case .changed:
       trackingState?.handleChanged(gesture: gesture)
@@ -301,8 +307,10 @@ final class _SwipeDismissalLeftToRightTransitionController: NSObject, UIViewCont
         // TODO: ???
         break
       case .end:
+        transitionContext.finishInteractiveTransition()
         transitionContext.completeTransition(true)
       case .start:
+        transitionContext.cancelInteractiveTransition()
         transitionContext.completeTransition(false)
       @unknown default:
         fatalError()
@@ -323,16 +331,22 @@ final class _SwipeDismissalLeftToRightTransitionController: NSObject, UIViewCont
       ),
       durationFactor: 0
     )
-    currentTransitionContext?.finishInteractiveTransition()
   }
 
   func cancelInteractiveTransition() {
     currentAnimator?.isReversed = true
-    currentAnimator?.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-    currentTransitionContext?.cancelInteractiveTransition()
+    currentAnimator?.continueAnimation(
+      withTimingParameters: UISpringTimingParameters(
+        dampingRatio: 1,
+        initialVelocity: .zero
+      ),
+      durationFactor: 2
+    )
   }
 
   func updateProgress(_ progress: CGFloat) {
+    currentAnimator?.isReversed = false
+    currentAnimator?.pauseAnimation()
     currentAnimator?.fractionComplete = progress
   }
 

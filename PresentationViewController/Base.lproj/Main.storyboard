@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -16,25 +17,34 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TzG-qc-SMd">
-                                <rect key="frame" x="180.5" y="433" width="53" height="30"/>
-                                <state key="normal" title="Present"/>
-                                <connections>
-                                    <action selector="onTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KEm-JY-yyh"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Rg8-A6-pU7">
+                                <rect key="frame" x="130.5" y="418" width="153" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9xE-4G-q1N">
+                                        <rect key="frame" x="0.0" y="0.0" width="153" height="30"/>
+                                        <state key="normal" title="FromBottom - ToRight"/>
+                                        <connections>
+                                            <action selector="onTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MYr-SZ-MA3"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8qE-sp-0Jd">
+                                        <rect key="frame" x="0.0" y="30" width="153" height="30"/>
+                                        <state key="normal" title="FromBottom - ToRight"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="TzG-qc-SMd" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="0r8-eJ-p2q"/>
-                            <constraint firstItem="TzG-qc-SMd" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="GCr-bC-gAP"/>
+                            <constraint firstItem="Rg8-A6-pU7" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Np0-zR-aiQ"/>
+                            <constraint firstItem="Rg8-A6-pU7" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="f2X-Qv-3H2"/>
                         </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="71" y="72"/>
+            <point key="canvasLocation" x="-352" y="56"/>
         </scene>
     </scenes>
     <resources>
