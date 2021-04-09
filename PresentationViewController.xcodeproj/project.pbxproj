@@ -17,7 +17,8 @@
 		4B895B1026210D7D00EB7312 /* FluidViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B895B0826210D7D00EB7312 /* FluidViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4B895B1626210DA200EB7312 /* FluidViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B2792620409900CA3D45 /* FluidViewController.swift */; };
 		4B895B1726210DA200EB7312 /* TransitionControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */; };
-		7E8A8DDE21A3745EE72835D5 /* Pods_PresentationViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7066218FE71FD5FD6D21CCE /* Pods_PresentationViewController.framework */; };
+		4B895B2226210F1700EB7312 /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B895B2126210F1700EB7312 /* SampleViewController.swift */; };
+		FFB3C9A6984CE0A0564C4BB5 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1F62A8E516E8119E4035F3 /* Pods_Demo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		17AB01176E3BBB602A9AD9F5 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
 		4B61048325C999430058D264 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B61048625C999430058D264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B61048A25C999430058D264 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -55,11 +57,13 @@
 		4B895B0826210D7D00EB7312 /* FluidViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FluidViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B895B0A26210D7D00EB7312 /* FluidViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FluidViewController.h; sourceTree = "<group>"; };
 		4B895B0B26210D7D00EB7312 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4B895B2126210F1700EB7312 /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
 		4BA9B2792620409900CA3D45 /* FluidViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluidViewController.swift; sourceTree = "<group>"; };
 		4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionControllers.swift; sourceTree = "<group>"; };
 		782274603CFA4B30DDBA934C /* Pods-PresentationViewController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PresentationViewController.debug.xcconfig"; path = "Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController.debug.xcconfig"; sourceTree = "<group>"; };
 		94C9550B108CA57498817401 /* Pods-PresentationViewController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PresentationViewController.release.xcconfig"; path = "Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController.release.xcconfig"; sourceTree = "<group>"; };
-		D7066218FE71FD5FD6D21CCE /* Pods_PresentationViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PresentationViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB1F62A8E516E8119E4035F3 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8D58084533A05D6336A5FDF /* Pods-Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.release.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +72,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B895B0F26210D7D00EB7312 /* FluidViewController.framework in Frameworks */,
-				7E8A8DDE21A3745EE72835D5 /* Pods_PresentationViewController.framework in Frameworks */,
+				FFB3C9A6984CE0A0564C4BB5 /* Pods_Demo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +89,7 @@
 		3DE27014C4315953E8A7A17B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D7066218FE71FD5FD6D21CCE /* Pods_PresentationViewController.framework */,
+				BB1F62A8E516E8119E4035F3 /* Pods_Demo.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -115,6 +119,7 @@
 			children = (
 				4B61048625C999430058D264 /* AppDelegate.swift */,
 				4B61048A25C999430058D264 /* ViewController.swift */,
+				4B895B2126210F1700EB7312 /* SampleViewController.swift */,
 				4B61048C25C999430058D264 /* Main.storyboard */,
 				4B61048F25C999440058D264 /* Assets.xcassets */,
 				4B61049125C999440058D264 /* LaunchScreen.storyboard */,
@@ -139,6 +144,8 @@
 			children = (
 				782274603CFA4B30DDBA934C /* Pods-PresentationViewController.debug.xcconfig */,
 				94C9550B108CA57498817401 /* Pods-PresentationViewController.release.xcconfig */,
+				17AB01176E3BBB602A9AD9F5 /* Pods-Demo.debug.xcconfig */,
+				E8D58084533A05D6336A5FDF /* Pods-Demo.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -268,7 +275,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-PresentationViewController-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Demo-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -281,15 +288,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Demo/Pods-Demo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -301,6 +308,7 @@
 			files = (
 				4B61048B25C999430058D264 /* ViewController.swift in Sources */,
 				4B61048725C999430058D264 /* AppDelegate.swift in Sources */,
+				4B895B2226210F1700EB7312 /* SampleViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,7 +469,7 @@
 		};
 		4B61049825C999440058D264 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 782274603CFA4B30DDBA934C /* Pods-PresentationViewController.debug.xcconfig */;
+			baseConfigurationReference = 17AB01176E3BBB602A9AD9F5 /* Pods-Demo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -469,7 +477,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KU2QEJ9K3Z;
 				INFOPLIST_FILE = PresentationViewController/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -483,7 +491,7 @@
 		};
 		4B61049925C999440058D264 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 94C9550B108CA57498817401 /* Pods-PresentationViewController.release.xcconfig */;
+			baseConfigurationReference = E8D58084533A05D6336A5FDF /* Pods-Demo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -491,7 +499,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KU2QEJ9K3Z;
 				INFOPLIST_FILE = PresentationViewController/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

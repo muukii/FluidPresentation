@@ -1,16 +1,20 @@
 PODS:
   - Reveal-SDK (28)
+  - TinyConstraints (4.0.1)
 
 DEPENDENCIES:
   - Reveal-SDK
+  - TinyConstraints
 
 SPEC REPOS:
   trunk:
     - Reveal-SDK
+    - TinyConstraints
 
 SPEC CHECKSUMS:
   Reveal-SDK: 1a2a678648fc4d277bad71c86d15530424324288
+  TinyConstraints: 8dd91295e56797648c7bc335dd20e1d91ec4c192
 
-PODFILE CHECKSUM: 5a8cf47c63e7c1fc247cd15073bd44daaf99642a
+PODFILE CHECKSUM: b3c1712b1f41818566e9c5fa0361491330bf2837
 
 COCOAPODS: 1.10.1

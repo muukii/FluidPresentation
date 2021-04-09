@@ -78,7 +78,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   private func setUp() {
 
-    modalPresentationStyle = .overCurrentContext
+    modalPresentationStyle = .fullScreen
     transitioningDelegate = self
 
     do {
@@ -190,10 +190,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   }
 
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    if let controller = leftToRightTrackingContext?.controller {
-      return controller
-    }
-    return nil
+    DismissingTransitionControllers.TopToBottomTransitionController()
   }
 
   public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
@@ -208,7 +205,7 @@ extension FluidViewController {
 
   private final class LeftToRightTrackingContext {
 
-    typealias TransitionController = DismissingTransitionControllers.LeftToRightTransitionController
+    typealias TransitionController = DismissingInteractiveTransitionControllers.LeftToRightTransitionController
 
     let viewFrame: CGRect
     let beganPoint: CGPoint
