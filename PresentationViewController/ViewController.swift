@@ -21,6 +21,7 @@
 
 
 import UIKit
+import FluidViewController
 
 class ViewController: UIViewController {
 
@@ -29,17 +30,24 @@ class ViewController: UIViewController {
     // Do any additional setup after loading the view.
   }
 
-  @IBAction func onTap(_ sender: Any) {
+  @IBAction func onTapAnyLeft(_ sender: Any) {
 
-    let controller = SampleViewController()
+    let controller = SampleViewController(behaviors: [.init(trigger: .any, startFrom: .left)])
 
     present(controller, animated: true, completion: nil)
 
   }
 
+  @IBAction func onTapEdgeLeft(_ sender: Any) {
+
+    let controller = SampleViewController(behaviors: [.init(trigger: .edge, startFrom: .left)])
+
+    present(controller, animated: true, completion: nil)
+
+  }
 }
 
-final class SampleViewController: PresentationViewController {
+final class SampleViewController: FluidViewController {
 
   override func viewDidLoad() {
     super.viewDidLoad()

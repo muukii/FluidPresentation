@@ -22,7 +22,7 @@
 import Foundation
 import UIKit
 
-open class PresentationViewController: UIViewController, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
+open class FluidViewController: UIViewController, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
 
   public struct Behavior: Hashable {
 
@@ -33,17 +33,17 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
 
     public enum StartFrom: Hashable {
       case left
-      case right
-      case top
-      case bottom
+//      case right
+//      case top
+//      case bottom
     }
 
     public let trigger: Trigger
     public let startFrom: StartFrom
 
     public init(
-      trigger: PresentationViewController.Behavior.Trigger,
-      startFrom: PresentationViewController.Behavior.StartFrom
+      trigger: FluidViewController.Behavior.Trigger,
+      startFrom: FluidViewController.Behavior.StartFrom
     ) {
       self.trigger = trigger
       self.startFrom = startFrom
@@ -57,8 +57,12 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
 
   private var isTracking = false
 
-  init(
-    behaviors: Set<Behavior> = []
+  private var isValidGestureDismissal: Bool {
+    modalPresentationStyle != .pageSheet
+  }
+
+  public init(
+    behaviors: Set<Behavior> = [.init(trigger: .any, startFrom: .left)]
   ) {
     self.behaviors = behaviors
     super.init(nibName: nil, bundle: nil)
@@ -77,9 +81,13 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
     modalPresentationStyle = .overCurrentContext
     transitioningDelegate = self
 
-    let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
-    view.addGestureRecognizer(panGesture)
-    panGesture.delegate = self
+    do {
+      if behaviors.filter({ $0.trigger == .any }).isEmpty == false {
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        view.addGestureRecognizer(panGesture)
+        panGesture.delegate = self
+      }
+    }
 
     do {
 
@@ -89,19 +97,11 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
         }
         .forEach {
           switch $0.startFrom {
-          case .top:
-            break
           case .left:
-
             let edgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgeLeftPanGesture))
             edgeGesture.edges = .left
             view.addGestureRecognizer(edgeGesture)
             edgeGesture.delegate = self
-
-          case .right:
-            break
-          case .bottom:
-            break
           }
         }
 
@@ -109,7 +109,36 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
   }
 
   @objc
-  private func handleEdgeLeftPanGesture(_ gesture: UIPanGestureRecognizer) {
+  private func handleEdgeLeftPanGesture(_ gesture: UIScreenEdgePanGestureRecognizer) {
+
+    switch gesture.state {
+    case .possible:
+      break
+    case .began:
+
+      if leftToRightTrackingContext == nil {
+        leftToRightTrackingContext = .init(
+          viewFrame: view.bounds,
+          beganPoint: gesture.location(in: view),
+          controller: .init()
+        )
+
+        dismiss(animated: true, completion: nil)
+      }
+
+    case .changed:
+      leftToRightTrackingContext?.handleChanged(gesture: gesture)
+    case .ended:
+      leftToRightTrackingContext?.handleEnded(gesture: gesture)
+      leftToRightTrackingContext = nil
+    case .cancelled:
+      leftToRightTrackingContext?.handleCancel(gesture: gesture)
+      leftToRightTrackingContext = nil
+    case .failed:
+      break
+    @unknown default:
+      break
+    }
 
   }
 
@@ -120,11 +149,14 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
     case .possible:
       break
     case .began:
+      break
+    case .changed:
 
-      if isBeingDismissed {
+      if leftToRightTrackingContext == nil, abs(gesture.translation(in: view).y) > 20 {
+        gesture.state = .failed
+      }
 
-      } else {
-
+      if leftToRightTrackingContext == nil, gesture.translation(in: view).x > 20 {
         leftToRightTrackingContext = .init(
           viewFrame: view.bounds,
           beganPoint: gesture.location(in: view),
@@ -132,15 +164,15 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
         )
 
         dismiss(animated: true, completion: nil)
-
       }
 
-    case .changed:
       leftToRightTrackingContext?.handleChanged(gesture: gesture)
     case .ended:
       leftToRightTrackingContext?.handleEnded(gesture: gesture)
+      leftToRightTrackingContext = nil
     case .cancelled:
       leftToRightTrackingContext?.handleCancel(gesture: gesture)
+      leftToRightTrackingContext = nil
     case .failed:
       break
     @unknown default:
@@ -172,7 +204,7 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
   }
 }
 
-extension PresentationViewController {
+extension FluidViewController {
 
   private final class LeftToRightTrackingContext {
 

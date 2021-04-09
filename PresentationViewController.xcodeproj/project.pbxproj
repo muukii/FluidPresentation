@@ -12,20 +12,50 @@
 		4B61048E25C999430058D264 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B61048C25C999430058D264 /* Main.storyboard */; };
 		4B61049025C999440058D264 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B61048F25C999440058D264 /* Assets.xcassets */; };
 		4B61049325C999440058D264 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B61049125C999440058D264 /* LaunchScreen.storyboard */; };
-		4BA9B27A2620409900CA3D45 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B2792620409900CA3D45 /* PresentationViewController.swift */; };
-		4BA9B27D26204CBB00CA3D45 /* TransitionControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */; };
+		4B895B0C26210D7D00EB7312 /* FluidViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4B895B0A26210D7D00EB7312 /* FluidViewController.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4B895B0F26210D7D00EB7312 /* FluidViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B895B0826210D7D00EB7312 /* FluidViewController.framework */; };
+		4B895B1026210D7D00EB7312 /* FluidViewController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4B895B0826210D7D00EB7312 /* FluidViewController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4B895B1626210DA200EB7312 /* FluidViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B2792620409900CA3D45 /* FluidViewController.swift */; };
+		4B895B1726210DA200EB7312 /* TransitionControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */; };
 		7E8A8DDE21A3745EE72835D5 /* Pods_PresentationViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7066218FE71FD5FD6D21CCE /* Pods_PresentationViewController.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4B895B0D26210D7D00EB7312 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4B61047B25C999430058D264 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4B895B0726210D7D00EB7312;
+			remoteInfo = FluidViewController;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4B895B1126210D7D00EB7312 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4B895B1026210D7D00EB7312 /* FluidViewController.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		4B61048325C999430058D264 /* PresentationViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PresentationViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B61048325C999430058D264 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B61048625C999430058D264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B61048A25C999430058D264 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4B61048D25C999430058D264 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4B61048F25C999440058D264 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4B61049225C999440058D264 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4B61049425C999440058D264 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BA9B2792620409900CA3D45 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
+		4B895B0826210D7D00EB7312 /* FluidViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FluidViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B895B0A26210D7D00EB7312 /* FluidViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FluidViewController.h; sourceTree = "<group>"; };
+		4B895B0B26210D7D00EB7312 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4BA9B2792620409900CA3D45 /* FluidViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluidViewController.swift; sourceTree = "<group>"; };
 		4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionControllers.swift; sourceTree = "<group>"; };
 		782274603CFA4B30DDBA934C /* Pods-PresentationViewController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PresentationViewController.debug.xcconfig"; path = "Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController.debug.xcconfig"; sourceTree = "<group>"; };
 		94C9550B108CA57498817401 /* Pods-PresentationViewController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PresentationViewController.release.xcconfig"; path = "Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController.release.xcconfig"; sourceTree = "<group>"; };
@@ -37,7 +67,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4B895B0F26210D7D00EB7312 /* FluidViewController.framework in Frameworks */,
 				7E8A8DDE21A3745EE72835D5 /* Pods_PresentationViewController.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B895B0526210D7D00EB7312 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +93,7 @@
 		4B61047A25C999430058D264 = {
 			isa = PBXGroup;
 			children = (
+				4B895B0926210D7D00EB7312 /* FluidViewController */,
 				4B61048525C999430058D264 /* PresentationViewController */,
 				4B61048425C999430058D264 /* Products */,
 				E2635A8DE8B4B14D214A4A03 /* Pods */,
@@ -65,7 +104,8 @@
 		4B61048425C999430058D264 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4B61048325C999430058D264 /* PresentationViewController.app */,
+				4B61048325C999430058D264 /* Demo.app */,
+				4B895B0826210D7D00EB7312 /* FluidViewController.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -75,14 +115,23 @@
 			children = (
 				4B61048625C999430058D264 /* AppDelegate.swift */,
 				4B61048A25C999430058D264 /* ViewController.swift */,
-				4BA9B2792620409900CA3D45 /* PresentationViewController.swift */,
-				4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */,
 				4B61048C25C999430058D264 /* Main.storyboard */,
 				4B61048F25C999440058D264 /* Assets.xcassets */,
 				4B61049125C999440058D264 /* LaunchScreen.storyboard */,
 				4B61049425C999440058D264 /* Info.plist */,
 			);
 			path = PresentationViewController;
+			sourceTree = "<group>";
+		};
+		4B895B0926210D7D00EB7312 /* FluidViewController */ = {
+			isa = PBXGroup;
+			children = (
+				4B895B0A26210D7D00EB7312 /* FluidViewController.h */,
+				4BA9B2792620409900CA3D45 /* FluidViewController.swift */,
+				4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */,
+				4B895B0B26210D7D00EB7312 /* Info.plist */,
+			);
+			path = FluidViewController;
 			sourceTree = "<group>";
 		};
 		E2635A8DE8B4B14D214A4A03 /* Pods */ = {
@@ -96,25 +145,56 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		4B895B0326210D7D00EB7312 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B895B0C26210D7D00EB7312 /* FluidViewController.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
-		4B61048225C999430058D264 /* PresentationViewController */ = {
+		4B61048225C999430058D264 /* Demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4B61049725C999440058D264 /* Build configuration list for PBXNativeTarget "PresentationViewController" */;
+			buildConfigurationList = 4B61049725C999440058D264 /* Build configuration list for PBXNativeTarget "Demo" */;
 			buildPhases = (
 				399A991D4FEE23A73B1A54A5 /* [CP] Check Pods Manifest.lock */,
 				4B61047F25C999430058D264 /* Sources */,
 				4B61048025C999430058D264 /* Frameworks */,
 				4B61048125C999430058D264 /* Resources */,
 				461EB23404D15BFDD8A797F0 /* [CP] Embed Pods Frameworks */,
+				4B895B1126210D7D00EB7312 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4B895B0E26210D7D00EB7312 /* PBXTargetDependency */,
+			);
+			name = Demo;
+			productName = PresentationViewController;
+			productReference = 4B61048325C999430058D264 /* Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4B895B0726210D7D00EB7312 /* FluidViewController */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B895B1426210D7D00EB7312 /* Build configuration list for PBXNativeTarget "FluidViewController" */;
+			buildPhases = (
+				4B895B0326210D7D00EB7312 /* Headers */,
+				4B895B0426210D7D00EB7312 /* Sources */,
+				4B895B0526210D7D00EB7312 /* Frameworks */,
+				4B895B0626210D7D00EB7312 /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = PresentationViewController;
-			productName = PresentationViewController;
-			productReference = 4B61048325C999430058D264 /* PresentationViewController.app */;
-			productType = "com.apple.product-type.application";
+			name = FluidViewController;
+			productName = FluidViewController;
+			productReference = 4B895B0826210D7D00EB7312 /* FluidViewController.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
 
@@ -126,6 +206,9 @@
 				LastUpgradeCheck = 1240;
 				TargetAttributes = {
 					4B61048225C999430058D264 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					4B895B0726210D7D00EB7312 = {
 						CreatedOnToolsVersion = 12.4;
 					};
 				};
@@ -143,7 +226,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4B61048225C999430058D264 /* PresentationViewController */,
+				4B61048225C999430058D264 /* Demo */,
+				4B895B0726210D7D00EB7312 /* FluidViewController */,
 			);
 		};
 /* End PBXProject section */
@@ -156,6 +240,13 @@
 				4B61049325C999440058D264 /* LaunchScreen.storyboard in Resources */,
 				4B61049025C999440058D264 /* Assets.xcassets in Resources */,
 				4B61048E25C999430058D264 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B895B0626210D7D00EB7312 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,14 +299,29 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BA9B27D26204CBB00CA3D45 /* TransitionControllers.swift in Sources */,
 				4B61048B25C999430058D264 /* ViewController.swift in Sources */,
-				4BA9B27A2620409900CA3D45 /* PresentationViewController.swift in Sources */,
 				4B61048725C999430058D264 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4B895B0426210D7D00EB7312 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B895B1726210DA200EB7312 /* TransitionControllers.swift in Sources */,
+				4B895B1626210DA200EB7312 /* FluidViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4B895B0E26210D7D00EB7312 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4B895B0726210D7D00EB7312 /* FluidViewController */;
+			targetProxy = 4B895B0D26210D7D00EB7312 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4B61048C25C999430058D264 /* Main.storyboard */ = {
@@ -357,6 +463,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 782274603CFA4B30DDBA934C /* Pods-PresentationViewController.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -378,6 +485,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 94C9550B108CA57498817401 /* Pods-PresentationViewController.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -395,6 +503,62 @@
 			};
 			name = Release;
 		};
+		4B895B1226210D7D00EB7312 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = KU2QEJ9K3Z;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FluidViewController/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.muukii.FluidViewController;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		4B895B1326210D7D00EB7312 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = KU2QEJ9K3Z;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = FluidViewController/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = app.muukii.FluidViewController;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -407,11 +571,20 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4B61049725C999440058D264 /* Build configuration list for PBXNativeTarget "PresentationViewController" */ = {
+		4B61049725C999440058D264 /* Build configuration list for PBXNativeTarget "Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4B61049825C999440058D264 /* Debug */,
 				4B61049925C999440058D264 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4B895B1426210D7D00EB7312 /* Build configuration list for PBXNativeTarget "FluidViewController" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B895B1226210D7D00EB7312 /* Debug */,
+				4B895B1326210D7D00EB7312 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
