@@ -51,54 +51,7 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
 
   }
 
-  private struct LeftToRightTrackingState {
-
-    typealias TransitionController = _SwipeDismissalLeftToRightTransitionController
-
-    let viewFrame: CGRect
-    let beganPoint: CGPoint
-    let controller: _SwipeDismissalLeftToRightTransitionController
-
-    func handleChanged(gesture: UIPanGestureRecognizer) {
-      let progress = calulateProgress(gesture: gesture)
-      controller.updateProgress(progress)
-    }
-
-    func handleEnded(gesture: UIPanGestureRecognizer) {
-
-      let progress = calulateProgress(gesture: gesture)
-      let velocity = gesture.velocity(in: gesture.view)
-
-      if progress > 0.5 || velocity.x > 300 {
-        controller.finishInteractiveTransition(velocityX: normalizedVelocity(gesture: gesture))
-      } else {
-        controller.cancelInteractiveTransition()
-      }
-
-    }
-
-    func handleCancel(gesture: UIPanGestureRecognizer) {
-      controller.cancelInteractiveTransition()
-    }
-
-    private func normalizedVelocity(gesture: UIPanGestureRecognizer) -> CGFloat {
-      let velocityX = gesture.velocity(in: gesture.view).x
-      return velocityX / viewFrame.width
-    }
-
-    private func calulateProgress(gesture: UIPanGestureRecognizer) -> CGFloat {
-      let targetView = gesture.view!
-      let t = targetView.transform
-      targetView.transform = .identity
-      let position = gesture.location(in: targetView)
-      targetView.transform = t
-
-      let progress = (position.x - beganPoint.x) / viewFrame.width
-      return progress
-    }
-  }
-
-  private var trackingState: LeftToRightTrackingState?
+  private var leftToRightTrackingContext: LeftToRightTrackingContext?
 
   public let behaviors: Set<Behavior>
 
@@ -118,8 +71,6 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
   ) {
     fatalError()
   }
-
-  private var leftToRightDismissalTransitionController: _SwipeDismissalLeftToRightTransitionController?
 
   private func setUp() {
 
@@ -174,12 +125,10 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
 
       } else {
 
-        leftToRightDismissalTransitionController = .init()
-
-        trackingState = .init(
+        leftToRightTrackingContext = .init(
           viewFrame: view.bounds,
           beganPoint: gesture.location(in: view),
-          controller: leftToRightDismissalTransitionController!
+          controller: .init()
         )
 
         dismiss(animated: true, completion: nil)
@@ -187,11 +136,11 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
       }
 
     case .changed:
-      trackingState?.handleChanged(gesture: gesture)
+      leftToRightTrackingContext?.handleChanged(gesture: gesture)
     case .ended:
-      trackingState?.handleEnded(gesture: gesture)
+      leftToRightTrackingContext?.handleEnded(gesture: gesture)
     case .cancelled:
-      trackingState?.handleCancel(gesture: gesture)
+      leftToRightTrackingContext?.handleCancel(gesture: gesture)
     case .failed:
       break
     @unknown default:
@@ -205,138 +154,81 @@ open class PresentationViewController: UIViewController, UIViewControllerTransit
   }
 
   public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    _PresentationBottomToTopTransitionController()
+    PresentingTransitionControllers.BottomToTopTransitionController()
   }
 
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    _PresentationBottomToTopTransitionController()
+    if let controller = leftToRightTrackingContext?.controller {
+      return controller
+    }
+    return nil
   }
 
   public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
-    if let controller = leftToRightDismissalTransitionController {
+    if let controller = leftToRightTrackingContext?.controller {
       return controller
     }
     return nil
   }
 }
 
-final class _PresentationBottomToTopTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
+extension PresentationViewController {
 
-  func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-    0.23
-  }
+  private final class LeftToRightTrackingContext {
 
-  func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+    typealias TransitionController = DismissingTransitionControllers.LeftToRightTransitionController
 
-    let toView = transitionContext.view(forKey: .to)!
+    let viewFrame: CGRect
+    let beganPoint: CGPoint
+    let controller: TransitionController
 
-    transitionContext.containerView.addSubview(toView)
-
-    toView.transform = .init(translationX: 0, y: toView.bounds.height)
-
-    let animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 1) {
-      toView.transform = .identity
+    init(
+      viewFrame: CGRect,
+      beganPoint: CGPoint,
+      controller: TransitionController
+    ) {
+      self.viewFrame = viewFrame
+      self.beganPoint = beganPoint
+      self.controller = controller
     }
 
-    animator.addCompletion { _ in
-      transitionContext.completeTransition(true)
+    func handleChanged(gesture: UIPanGestureRecognizer) {
+      let progress = calulateProgress(gesture: gesture)
+      controller.updateProgress(progress)
     }
 
-    animator.startAnimation()
+    func handleEnded(gesture: UIPanGestureRecognizer) {
 
-  }
+      let progress = calulateProgress(gesture: gesture)
+      let velocity = gesture.velocity(in: gesture.view)
 
-}
-
-/*
- final class _DismissalTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
-
- func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
- 0.23
- }
-
- func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-
- let fromView = transitionContext.view(forKey: .from)!
-
- let animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 1) {
- fromView.transform = .init(translationX: 0, y: fromView.bounds.height)
- }
-
- animator.addCompletion { _ in
- transitionContext.completeTransition(true)
- fromView.transform = .identity
- }
-
- animator.startAnimation()
-
- }
-
- }
- */
-
-final class _SwipeDismissalLeftToRightTransitionController: NSObject, UIViewControllerInteractiveTransitioning {
-
-  private weak var currentTransitionContext: UIViewControllerContextTransitioning?
-  private var currentAnimator: UIViewPropertyAnimator?
-
-  func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
-
-    self.currentTransitionContext = transitionContext
-
-    let fromView = transitionContext.view(forKey: .from)!
-
-    let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1) {
-      fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
-    }
-
-    animator.addCompletion { position in
-      switch position {
-      case .current:
-        // TODO: ???
-        break
-      case .end:
-        transitionContext.finishInteractiveTransition()
-        transitionContext.completeTransition(true)
-      case .start:
-        transitionContext.cancelInteractiveTransition()
-        transitionContext.completeTransition(false)
-      @unknown default:
-        fatalError()
+      if progress > 0.5 || velocity.x > 300 {
+        controller.finishInteractiveTransition(velocityX: normalizedVelocity(gesture: gesture))
+      } else {
+        controller.cancelInteractiveTransition()
       }
 
     }
 
-    animator.pauseAnimation()
+    func handleCancel(gesture: UIPanGestureRecognizer) {
+      controller.cancelInteractiveTransition()
+    }
 
-    self.currentAnimator = animator
-  }
+    private func normalizedVelocity(gesture: UIPanGestureRecognizer) -> CGFloat {
+      let velocityX = gesture.velocity(in: gesture.view).x
+      return velocityX / viewFrame.width
+    }
 
-  func finishInteractiveTransition(velocityX: CGFloat) {
-    currentAnimator?.continueAnimation(
-      withTimingParameters: UISpringTimingParameters(
-        dampingRatio: 1,
-        initialVelocity: .init(dx: velocityX, dy: 0)
-      ),
-      durationFactor: 0
-    )
-  }
+    private func calulateProgress(gesture: UIPanGestureRecognizer) -> CGFloat {
+      let targetView = gesture.view!
+      let t = targetView.transform
+      targetView.transform = .identity
+      let position = gesture.location(in: targetView)
+      targetView.transform = t
 
-  func cancelInteractiveTransition() {
-    currentAnimator?.isReversed = true
-    currentAnimator?.continueAnimation(
-      withTimingParameters: UISpringTimingParameters(
-        dampingRatio: 1,
-        initialVelocity: .zero
-      ),
-      durationFactor: 2
-    )
-  }
-
-  func updateProgress(_ progress: CGFloat) {
-    currentAnimator?.isReversed = false
-    currentAnimator?.pauseAnimation()
-    currentAnimator?.fractionComplete = progress
+      let progress = (position.x - beganPoint.x) / viewFrame.width
+      return progress
+    }
   }
 
 }

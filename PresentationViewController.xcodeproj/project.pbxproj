@@ -13,6 +13,7 @@
 		4B61049025C999440058D264 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4B61048F25C999440058D264 /* Assets.xcassets */; };
 		4B61049325C999440058D264 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4B61049125C999440058D264 /* LaunchScreen.storyboard */; };
 		4BA9B27A2620409900CA3D45 /* PresentationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B2792620409900CA3D45 /* PresentationViewController.swift */; };
+		4BA9B27D26204CBB00CA3D45 /* TransitionControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */; };
 		7E8A8DDE21A3745EE72835D5 /* Pods_PresentationViewController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D7066218FE71FD5FD6D21CCE /* Pods_PresentationViewController.framework */; };
 /* End PBXBuildFile section */
 
@@ -25,6 +26,7 @@
 		4B61049225C999440058D264 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4B61049425C999440058D264 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4BA9B2792620409900CA3D45 /* PresentationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresentationViewController.swift; sourceTree = "<group>"; };
+		4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionControllers.swift; sourceTree = "<group>"; };
 		782274603CFA4B30DDBA934C /* Pods-PresentationViewController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PresentationViewController.debug.xcconfig"; path = "Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController.debug.xcconfig"; sourceTree = "<group>"; };
 		94C9550B108CA57498817401 /* Pods-PresentationViewController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PresentationViewController.release.xcconfig"; path = "Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController.release.xcconfig"; sourceTree = "<group>"; };
 		D7066218FE71FD5FD6D21CCE /* Pods_PresentationViewController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PresentationViewController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,6 +76,7 @@
 				4B61048625C999430058D264 /* AppDelegate.swift */,
 				4B61048A25C999430058D264 /* ViewController.swift */,
 				4BA9B2792620409900CA3D45 /* PresentationViewController.swift */,
+				4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */,
 				4B61048C25C999430058D264 /* Main.storyboard */,
 				4B61048F25C999440058D264 /* Assets.xcassets */,
 				4B61049125C999440058D264 /* LaunchScreen.storyboard */,
@@ -205,6 +208,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BA9B27D26204CBB00CA3D45 /* TransitionControllers.swift in Sources */,
 				4B61048B25C999430058D264 /* ViewController.swift in Sources */,
 				4BA9B27A2620409900CA3D45 /* PresentationViewController.swift in Sources */,
 				4B61048725C999430058D264 /* AppDelegate.swift in Sources */,
