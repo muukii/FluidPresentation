@@ -39,7 +39,6 @@ private func resorationHierarchy(view: UIView) -> () -> Void {
   }
 }
 
-
 private struct ViewProperties {
 
   var alpha: CGFloat
@@ -172,6 +171,8 @@ enum DismissingInteractiveTransitionControllers {
 
     func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
 
+      Log.debug(.generic, "Start Interactive Transition")
+
       self.currentTransitionContext = transitionContext
 
       let fromView = transitionContext.viewController(forKey: .from)!.view!
@@ -208,6 +209,7 @@ enum DismissingInteractiveTransitionControllers {
       animator.addCompletion { position in
         switch position {
         case .current:
+          assertionFailure()
           // TODO: ???
           break
         case .end:
@@ -230,7 +232,8 @@ enum DismissingInteractiveTransitionControllers {
     }
 
     func finishInteractiveTransition(velocityX: CGFloat) {
-      currentAnimator?.continueAnimation(
+      Log.debug(.generic, "Finish Interactive Transition")
+      currentAnimator!.continueAnimation(
         withTimingParameters: UISpringTimingParameters(
           dampingRatio: 1,
           initialVelocity: .init(dx: velocityX, dy: 0)
@@ -240,8 +243,9 @@ enum DismissingInteractiveTransitionControllers {
     }
 
     func cancelInteractiveTransition() {
-      currentAnimator?.isReversed = true
-      currentAnimator?.continueAnimation(
+      Log.debug(.generic, "Cancel Interactive Transition, \(currentAnimator?.fractionComplete)")
+      currentAnimator!.isReversed = true
+      currentAnimator!.continueAnimation(
         withTimingParameters: UISpringTimingParameters(
           dampingRatio: 1,
           initialVelocity: .zero
@@ -251,10 +255,20 @@ enum DismissingInteractiveTransitionControllers {
     }
 
     func updateProgress(_ progress: CGFloat) {
-      currentTransitionContext?.updateInteractiveTransition(progress)
-      currentAnimator?.isReversed = false
-      currentAnimator?.pauseAnimation()
-      currentAnimator?.fractionComplete = progress
+      Log.debug(.generic, "Update progress")
+
+      guard
+        let context = currentTransitionContext,
+        let animator = currentAnimator
+      else {
+
+        return
+      }
+
+      context.updateInteractiveTransition(progress)
+      animator.isReversed = false
+      animator.pauseAnimation()
+      animator.fractionComplete = progress
     }
 
   }

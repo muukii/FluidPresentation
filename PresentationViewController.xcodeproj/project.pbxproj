@@ -19,6 +19,8 @@
 		4B895B1726210DA200EB7312 /* TransitionControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */; };
 		4B895B2226210F1700EB7312 /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B895B2126210F1700EB7312 /* SampleViewController.swift */; };
 		4BF23D5426218B1B001D508B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF23D5326218B1B001D508B /* ContentView.swift */; };
+		4BF23D5E2621B11D001D508B /* ScrollView+Handling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF23D5D2621B11D001D508B /* ScrollView+Handling.swift */; };
+		4BF23D612621B857001D508B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF23D602621B857001D508B /* Log.swift */; };
 		FFB3C9A6984CE0A0564C4BB5 /* Pods_Demo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB1F62A8E516E8119E4035F3 /* Pods_Demo.framework */; };
 /* End PBXBuildFile section */
 
@@ -62,6 +64,8 @@
 		4BA9B2792620409900CA3D45 /* FluidViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluidViewController.swift; sourceTree = "<group>"; };
 		4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionControllers.swift; sourceTree = "<group>"; };
 		4BF23D5326218B1B001D508B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		4BF23D5D2621B11D001D508B /* ScrollView+Handling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScrollView+Handling.swift"; sourceTree = "<group>"; };
+		4BF23D602621B857001D508B /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
 		782274603CFA4B30DDBA934C /* Pods-PresentationViewController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PresentationViewController.debug.xcconfig"; path = "Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController.debug.xcconfig"; sourceTree = "<group>"; };
 		94C9550B108CA57498817401 /* Pods-PresentationViewController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PresentationViewController.release.xcconfig"; path = "Target Support Files/Pods-PresentationViewController/Pods-PresentationViewController.release.xcconfig"; sourceTree = "<group>"; };
 		BB1F62A8E516E8119E4035F3 /* Pods_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,6 +140,8 @@
 			children = (
 				4B895B0A26210D7D00EB7312 /* FluidViewController.h */,
 				4BA9B2792620409900CA3D45 /* FluidViewController.swift */,
+				4BF23D602621B857001D508B /* Log.swift */,
+				4BF23D5D2621B11D001D508B /* ScrollView+Handling.swift */,
 				4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */,
 				4B895B0B26210D7D00EB7312 /* Info.plist */,
 			);
@@ -321,6 +327,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4B895B1726210DA200EB7312 /* TransitionControllers.swift in Sources */,
+				4BF23D5E2621B11D001D508B /* ScrollView+Handling.swift in Sources */,
+				4BF23D612621B857001D508B /* Log.swift in Sources */,
 				4B895B1626210DA200EB7312 /* FluidViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,7 +535,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = FluidViewController/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -555,7 +563,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = FluidViewController/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -58,9 +58,9 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
     public enum StartFrom: Hashable {
       case left
-//      case right
-//      case top
-//      case bottom
+      //      case right
+      //      case top
+      //      case bottom
     }
 
     public let trigger: Trigger
@@ -85,6 +85,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   private var isValidGestureDismissal: Bool {
     modalPresentationStyle != .pageSheet
   }
+
+  private let scrollController = ScrollController()
 
   public init(
     behaviors: Set<DismissingIntereaction> = [.init(trigger: .any, startFrom: .left)]
@@ -111,7 +113,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
     do {
       if behaviors.filter({ $0.trigger == .any }).isEmpty == false {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+        let panGesture = _PanGestureRecognizer(target: self, action: #selector(handlePanGesture))
         view.addGestureRecognizer(panGesture)
         panGesture.delegate = self
       }
@@ -171,38 +173,70 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   }
 
   @objc
-  private func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+  private func handlePanGesture(_ gesture: _PanGestureRecognizer) {
 
     switch gesture.state {
     case .possible:
       break
     case .began:
+
       break
+
     case .changed:
 
-      if leftToRightTrackingContext == nil, abs(gesture.translation(in: view).y) > 20 {
-        gesture.state = .failed
+      if leftToRightTrackingContext == nil {
+
+        if abs(gesture.translation(in: view).y) > 20 {
+          gesture.state = .failed
+          return
+        }
+
+        if gesture.translation(in: view).x < -5 {
+          gesture.state = .failed
+          return
+        }
+
+        if gesture.translation(in: view).x > 20 {
+
+          if let scrollView = gesture.trackingScrollView {
+
+            let representation = ScrollViewRepresentation(from: scrollView)
+
+            if representation.isReachedToEdge(.left) {
+
+              scrollController.startTracking(scrollView: scrollView)
+
+            } else {
+              gesture.state = .failed
+              return
+            }
+
+          }
+
+          leftToRightTrackingContext = .init(
+            viewFrame: view.bounds,
+            beganPoint: gesture.location(in: view),
+            controller: .init()
+          )
+
+          scrollController.lockScrolling()
+          dismiss(animated: true, completion: nil)
+        }
       }
 
-      if leftToRightTrackingContext == nil, gesture.translation(in: view).x > 20 {
-        leftToRightTrackingContext = .init(
-          viewFrame: view.bounds,
-          beganPoint: gesture.location(in: view),
-          controller: .init()
-        )
-
-        dismiss(animated: true, completion: nil)
+      if isBeingDismissed {
+        leftToRightTrackingContext?.handleChanged(gesture: gesture)
       }
-
-      leftToRightTrackingContext?.handleChanged(gesture: gesture)
     case .ended:
+      scrollController.unlockScrolling()
+      scrollController.endTracking()
       leftToRightTrackingContext?.handleEnded(gesture: gesture)
       leftToRightTrackingContext = nil
-    case .cancelled:
+    case .cancelled, .failed:
+      scrollController.unlockScrolling()
+      scrollController.endTracking()
       leftToRightTrackingContext?.handleCancel(gesture: gesture)
       leftToRightTrackingContext = nil
-    case .failed:
-      break
     @unknown default:
       break
     }
@@ -228,11 +262,15 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   }
 
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    DismissingTransitionControllers.TopToBottomTransitionController()
+
+    Log.debug(.generic, "Start Dismiss")
+
+    return DismissingTransitionControllers.TopToBottomTransitionController()
   }
 
   public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
     if let controller = leftToRightTrackingContext?.controller {
+      Log.debug(.generic, "Start Interactive Dismiss")
       return controller
     }
     return nil
@@ -296,6 +334,66 @@ extension FluidViewController {
       let progress = (position.x - beganPoint.x) / viewFrame.width
       return progress
     }
+  }
+
+}
+
+final class _PanGestureRecognizer: UIPanGestureRecognizer {
+
+  weak var trackingScrollView: UIScrollView?
+
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+    trackingScrollView = event.findScrollView()
+    super.touchesBegan(touches, with: event)
+  }
+
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+
+    super.touchesMoved(touches, with: event)
+  }
+
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+    super.touchesEnded(touches, with: event)
+  }
+
+  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+    super.touchesCancelled(touches, with: event)
+  }
+
+}
+
+extension UIEvent {
+
+  fileprivate func findScrollView() -> UIScrollView? {
+
+    guard
+      let firstTouch = allTouches?.first,
+      let targetView = firstTouch.view
+    else { return nil }
+
+    let scrollView = sequence(first: targetView, next: \.next).map { $0 }
+      .first {
+        guard let scrollView = $0 as? UIScrollView else {
+          return false
+        }
+
+        func isScrollable(scrollView: UIScrollView) -> Bool {
+
+          let contentInset: UIEdgeInsets
+
+          if #available(iOS 11.0, *) {
+            contentInset = scrollView.adjustedContentInset
+          } else {
+            contentInset = scrollView.contentInset
+          }
+
+          return (scrollView.bounds.width - (contentInset.right + contentInset.left) <= scrollView.contentSize.width) || (scrollView.bounds.height - (contentInset.top + contentInset.bottom) <= scrollView.contentSize.height)
+        }
+
+        return isScrollable(scrollView: scrollView)
+      }
+
+    return (scrollView as? UIScrollView)
   }
 
 }
