@@ -106,6 +106,10 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   public var presentingTransition: PresentingTransition = .slideIn(from: .bottom)
   public var dismissingInteractions: Set<DismissingIntereaction> = []
 
+  public var interactiveUnwindGestureRecognizer: UIPanGestureRecognizer?
+
+  public var interactiveEdgeUnwindGestureRecognizer: UIScreenEdgePanGestureRecognizer?
+
   private func setUp() {
 
     modalPresentationStyle = .fullScreen
@@ -116,6 +120,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
         let panGesture = _PanGestureRecognizer(target: self, action: #selector(handlePanGesture))
         view.addGestureRecognizer(panGesture)
         panGesture.delegate = self
+        self.interactiveUnwindGestureRecognizer = panGesture
       }
     }
 
@@ -128,10 +133,11 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
         .forEach {
           switch $0.startFrom {
           case .left:
-            let edgeGesture = UIScreenEdgePanGestureRecognizer(target: self, action: #selector(handleEdgeLeftPanGesture))
+            let edgeGesture = _EdgePanGestureRecognizer(target: self, action: #selector(handleEdgeLeftPanGesture))
             edgeGesture.edges = .left
             view.addGestureRecognizer(edgeGesture)
             edgeGesture.delegate = self
+            self.interactiveEdgeUnwindGestureRecognizer = edgeGesture
           }
         }
 
@@ -139,7 +145,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   }
 
   @objc
-  private func handleEdgeLeftPanGesture(_ gesture: UIScreenEdgePanGestureRecognizer) {
+  private func handleEdgeLeftPanGesture(_ gesture: _EdgePanGestureRecognizer) {
 
     switch gesture.state {
     case .possible:
@@ -147,6 +153,13 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     case .began:
 
       if leftToRightTrackingContext == nil {
+
+        if let scrollView = gesture.trackingScrollView {
+
+          scrollController.startTracking(scrollView: scrollView)
+          scrollController.lockScrolling()
+        }
+
         leftToRightTrackingContext = .init(
           viewFrame: view.bounds,
           beganPoint: gesture.location(in: view),
@@ -159,13 +172,15 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     case .changed:
       leftToRightTrackingContext?.handleChanged(gesture: gesture)
     case .ended:
+      scrollController.unlockScrolling()
+      scrollController.endTracking()
       leftToRightTrackingContext?.handleEnded(gesture: gesture)
       leftToRightTrackingContext = nil
-    case .cancelled:
+    case .cancelled, .failed:
+      scrollController.unlockScrolling()
+      scrollController.endTracking()
       leftToRightTrackingContext?.handleCancel(gesture: gesture)
       leftToRightTrackingContext = nil
-    case .failed:
-      break
     @unknown default:
       break
     }
@@ -186,7 +201,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
       if leftToRightTrackingContext == nil {
 
-        if abs(gesture.translation(in: view).y) > 20 {
+        if abs(gesture.translation(in: view).y) > 5 {
           gesture.state = .failed
           return
         }
@@ -196,7 +211,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
           return
         }
 
-        if gesture.translation(in: view).x > 20 {
+        if gesture.translation(in: view).x > 0 {
 
           if let scrollView = gesture.trackingScrollView {
 
@@ -334,6 +349,30 @@ extension FluidViewController {
       let progress = (position.x - beganPoint.x) / viewFrame.width
       return progress
     }
+  }
+
+}
+
+final class _EdgePanGestureRecognizer: UIScreenEdgePanGestureRecognizer {
+
+  weak var trackingScrollView: UIScrollView?
+
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+    trackingScrollView = event.findScrollView()
+    super.touchesBegan(touches, with: event)
+  }
+
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+
+    super.touchesMoved(touches, with: event)
+  }
+
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+    super.touchesEnded(touches, with: event)
+  }
+
+  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+    super.touchesCancelled(touches, with: event)
   }
 
 }

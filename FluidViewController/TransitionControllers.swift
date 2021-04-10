@@ -199,7 +199,7 @@ enum DismissingInteractiveTransitionControllers {
         toViewProperties.restore(in: toView)
       }
 
-      let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1) {
+      let animator = UIViewPropertyAnimator(duration: 0.65, dampingRatio: 1) {
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
         fromView.alpha = 0
         toView.transform = .identity
@@ -233,24 +233,42 @@ enum DismissingInteractiveTransitionControllers {
 
     func finishInteractiveTransition(velocityX: CGFloat) {
       Log.debug(.generic, "Finish Interactive Transition")
-      currentAnimator!.continueAnimation(
+
+      guard
+        let context = currentTransitionContext,
+        let animator = currentAnimator
+      else {
+
+        return
+      }
+
+      animator.continueAnimation(
         withTimingParameters: UISpringTimingParameters(
           dampingRatio: 1,
           initialVelocity: .init(dx: velocityX, dy: 0)
         ),
-        durationFactor: 0
+        durationFactor: 1
       )
     }
 
     func cancelInteractiveTransition() {
-      Log.debug(.generic, "Cancel Interactive Transition, \(currentAnimator?.fractionComplete)")
-      currentAnimator!.isReversed = true
-      currentAnimator!.continueAnimation(
+      Log.debug(.generic, "Cancel Interactive Transition")
+
+      guard
+        let context = currentTransitionContext,
+        let animator = currentAnimator
+      else {
+
+        return
+      }
+
+      animator.isReversed = true
+      animator.continueAnimation(
         withTimingParameters: UISpringTimingParameters(
           dampingRatio: 1,
           initialVelocity: .zero
         ),
-        durationFactor: 2
+        durationFactor: 1
       )
     }
 

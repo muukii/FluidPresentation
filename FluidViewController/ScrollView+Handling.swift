@@ -6,6 +6,7 @@ final class ScrollController {
   private var shouldStop: Bool = false
   private var previousValue: CGPoint?
   private weak var trackingScrollView: UIScrollView?
+  private var originalShowsVerticalScrollIndicator = true
 
   init() {
 
@@ -18,9 +19,10 @@ final class ScrollController {
   func unlockScrolling() {
     shouldStop = false
   }
-  
+
   func startTracking(scrollView: UIScrollView) {
     self.trackingScrollView = scrollView
+    self.originalShowsVerticalScrollIndicator = scrollView.showsVerticalScrollIndicator
 
     scrollObserver?.invalidate()
     scrollObserver = scrollView.observe(\.contentOffset, options: .old) { [weak self, weak _scrollView = scrollView] scrollView, change in
@@ -33,6 +35,7 @@ final class ScrollController {
 
   func endTracking() {
     scrollObserver?.invalidate()
+    trackingScrollView?.showsVerticalScrollIndicator = originalShowsVerticalScrollIndicator
     scrollObserver = nil
   }
 
