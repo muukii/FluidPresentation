@@ -1,5 +1,7 @@
 import SwiftUI
 
+var count = 0
+
 struct ContentView: View {
 
   enum Action {
@@ -19,11 +21,14 @@ struct ContentView: View {
 
     ZStack {
 
-      Color(white: 0.95, opacity: 1)
+      Color(white: 1, opacity: 1)
         .edgesIgnoringSafeArea(.all)
 
       ScrollView(.vertical, showsIndicators: true) {
         VStack {
+
+          Text("\(count)")
+            .font(.title)
 
           Text("Good morning")
 
@@ -66,7 +71,7 @@ struct ContentView: View {
           .padding(.horizontal, 20)
           ScrollView(.horizontal, showsIndicators: true) {
             HStack {
-              ForEach(0..<30) { (i) in
+              ForEach(0..<10) { (i) in
 
                 Rectangle()
                   .frame(width: 50, height: 50, alignment: .center)
@@ -76,11 +81,11 @@ struct ContentView: View {
             }
           }
 
-          ForEach(0..<10) { i in
+          ForEach(0..<6) { i in
             Text("Section")
             ScrollView(.horizontal, showsIndicators: true) {
               HStack {
-                ForEach(0..<30) { (i) in
+                ForEach(0..<10) { (i) in
 
                   Rectangle()
                     .frame(width: 100, height: 100, alignment: .center)

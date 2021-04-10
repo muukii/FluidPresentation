@@ -7,6 +7,41 @@
 
 import UIKit
 
+private final class DropShadowContainerView: UIView {
+
+  override func layoutSubviews() {
+
+    super.layoutSubviews()
+
+    layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+    layer.shadowColor = UIColor.init(white: 0, alpha: 0.2).cgColor
+    layer.shadowRadius = 2
+    layer.shadowOffset = .zero
+    layer.shadowOpacity = 1
+
+  }
+
+}
+
+private struct ViewProperties {
+
+  var alpha: CGFloat
+  var transform: CGAffineTransform
+
+  init(
+    from view: UIView
+  ) {
+    self.alpha = view.alpha
+    self.transform = view.transform
+  }
+
+  func restore(in view: UIView) {
+    view.alpha = alpha
+    view.transform = transform
+  }
+
+}
+
 enum PresentingTransitionControllers {
 
   final class BottomToTopTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
@@ -23,7 +58,7 @@ enum PresentingTransitionControllers {
 
       toView.transform = .init(translationX: 0, y: toView.bounds.height)
 
-      let animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 1) {
+      let animator = UIViewPropertyAnimator(duration: 0.55, dampingRatio: 1) {
         toView.transform = .identity
       }
 
@@ -45,17 +80,27 @@ enum PresentingTransitionControllers {
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
-      let toView = transitionContext.view(forKey: .to)!
+      let toView = transitionContext.viewController(forKey: .to)!.view!
+      let fromView = transitionContext.viewController(forKey: .from)!.view!
 
+      transitionContext.containerView.backgroundColor = .white
+      transitionContext.containerView.addSubview(fromView)
       transitionContext.containerView.addSubview(toView)
 
-      toView.transform = .init(translationX: toView.bounds.width, y: 0)
+      let fromViewProperties = ViewProperties(from: fromView)
 
-      let animator = UIViewPropertyAnimator(duration: 0.4, dampingRatio: 1) {
+      toView.transform = .init(translationX: toView.bounds.width, y: 0)
+      toView.alpha = 0
+
+      let animator = UIViewPropertyAnimator(duration: 0.65, dampingRatio: 1) {
+        fromView.transform = .init(translationX: -toView.bounds.width, y: 0)
+        fromView.alpha = 0
         toView.transform = .identity
+        toView.alpha = 1
       }
 
       animator.addCompletion { _ in
+        fromViewProperties.restore(in: fromView)
         transitionContext.completeTransition(true)
       }
 
@@ -76,18 +121,35 @@ enum DismissingTransitionControllers {
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
-      let fromView = transitionContext.viewController(forKey: .from)!.view!
+      func resoration(view: UIView) -> () -> Void {
 
-      if transitionContext.presentationStyle == .fullScreen {
-        // to visible background view while transitioning.
-        transitionContext.containerView.insertSubview(transitionContext.viewController(forKey: .to)!.view, at: 0)
+        guard let superview = view.superview else {
+          return {}
+        }
+
+        guard let index = superview.subviews.firstIndex(of: view) else {
+          return {}
+        }
+
+        return {
+          superview.insertSubview(view, at: index)
+        }
       }
 
-      let animator = UIViewPropertyAnimator(duration: 1, dampingRatio: 1) {
+      let fromView = transitionContext.viewController(forKey: .from)!.view!
+      let toView = transitionContext.viewController(forKey: .to)!.view!
+
+      let restore = resoration(view: toView)
+
+      transitionContext.containerView.addSubview(toView)
+      transitionContext.containerView.addSubview(fromView)
+
+      let animator = UIViewPropertyAnimator(duration: 0.55, dampingRatio: 1) {
         fromView.transform = .init(translationX: 0, y: fromView.bounds.height)
       }
 
       animator.addCompletion { _ in
+        restore()
         transitionContext.completeTransition(true)
       }
 
@@ -112,13 +174,36 @@ enum DismissingInteractiveTransitionControllers {
 
       let fromView = transitionContext.viewController(forKey: .from)!.view!
 
-      if transitionContext.presentationStyle == .fullScreen {
-        // to visible background view while transitioning.
-        transitionContext.containerView.insertSubview(transitionContext.viewController(forKey: .to)!.view, at: 0)
+      let toView = transitionContext.viewController(forKey: .to)!.view!
+      let toViewSuperview = toView.superview
+      print(toViewSuperview)
+//      assert(toViewSuperview == nil||toViewSuperview?.subviews.count == 1)
+
+      assert(fromView.bounds.width == transitionContext.containerView.bounds.width)
+      assert(toView.bounds.width == transitionContext.containerView.bounds.width)
+
+      transitionContext.containerView.backgroundColor = .white
+//      transitionContext.containerView.addSubview(toView)
+      transitionContext.containerView.addSubview(fromView)
+
+      let toViewProperties = ViewProperties(from: toView)
+
+      makeInitialState: do {
+        toView.transform = .init(translationX: -fromView.bounds.width, y: 0)
+        toView.alpha = 0
+      }
+
+      func cleanup() {
+        toViewProperties.restore(in: toView)
+        /// in some cases, presentation-controller won't restore view hierarchy.
+//        toViewSuperview?.addSubview(toView)
       }
 
       let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1) {
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
+        fromView.alpha = 0
+        toView.transform = .identity
+        toView.alpha = 1
       }
 
       animator.addCompletion { position in
@@ -127,9 +212,11 @@ enum DismissingInteractiveTransitionControllers {
           // TODO: ???
           break
         case .end:
+          cleanup()
           transitionContext.finishInteractiveTransition()
           transitionContext.completeTransition(true)
         case .start:
+          cleanup()
           transitionContext.cancelInteractiveTransition()
           transitionContext.completeTransition(false)
         @unknown default:

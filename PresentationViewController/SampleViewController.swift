@@ -15,6 +15,11 @@ final class SampleViewController: FluidViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    count += 1
+
+    accessibilityLabel = count.description
+    view.accessibilityIdentifier = count.description
+
     let hosting = UIHostingController(
       rootView: ContentView(
         onAction: { [unowned self] action in
