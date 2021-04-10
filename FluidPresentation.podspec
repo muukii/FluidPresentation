@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name = "FluidPresentation"
   s.version = "1.0.0"
-  s.summary = "A component-oriented image editor on top of CoreImage."
+  s.summary = "Presentation-based view controller which can unwind by any gestures."
 
   s.homepage = "https://github.com/eure/FluidPresentation"
   s.license = "MIT"
@@ -13,4 +13,5 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.ios.deployment_target = "12.0"
   s.ios.frameworks = ["UIKit"]
+  s.source_files = "FluidPresentation/**/*.swift"
 end
