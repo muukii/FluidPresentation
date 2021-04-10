@@ -23,6 +23,23 @@ private final class DropShadowContainerView: UIView {
 
 }
 
+private func resorationHierarchy(view: UIView) -> () -> Void {
+
+  guard let superview = view.superview else {
+    return {}
+  }
+
+  guard let index = superview.subviews.firstIndex(of: view) else {
+    return {}
+  }
+
+  return { [weak superview, weak view] in
+    guard let superview = superview, let view = view else { return }
+    superview.insertSubview(view, at: index)
+  }
+}
+
+
 private struct ViewProperties {
 
   var alpha: CGFloat
@@ -121,25 +138,10 @@ enum DismissingTransitionControllers {
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
-      func resoration(view: UIView) -> () -> Void {
-
-        guard let superview = view.superview else {
-          return {}
-        }
-
-        guard let index = superview.subviews.firstIndex(of: view) else {
-          return {}
-        }
-
-        return {
-          superview.insertSubview(view, at: index)
-        }
-      }
-
       let fromView = transitionContext.viewController(forKey: .from)!.view!
       let toView = transitionContext.viewController(forKey: .to)!.view!
 
-      let restore = resoration(view: toView)
+      let restore = resorationHierarchy(view: toView)
 
       transitionContext.containerView.addSubview(toView)
       transitionContext.containerView.addSubview(fromView)
@@ -175,15 +177,13 @@ enum DismissingInteractiveTransitionControllers {
       let fromView = transitionContext.viewController(forKey: .from)!.view!
 
       let toView = transitionContext.viewController(forKey: .to)!.view!
-      let toViewSuperview = toView.superview
-      print(toViewSuperview)
-//      assert(toViewSuperview == nil||toViewSuperview?.subviews.count == 1)
+      let restore = resorationHierarchy(view: toView)
 
       assert(fromView.bounds.width == transitionContext.containerView.bounds.width)
       assert(toView.bounds.width == transitionContext.containerView.bounds.width)
 
       transitionContext.containerView.backgroundColor = .white
-//      transitionContext.containerView.addSubview(toView)
+      transitionContext.containerView.addSubview(toView)
       transitionContext.containerView.addSubview(fromView)
 
       let toViewProperties = ViewProperties(from: toView)
@@ -194,9 +194,8 @@ enum DismissingInteractiveTransitionControllers {
       }
 
       func cleanup() {
+        restore()
         toViewProperties.restore(in: toView)
-        /// in some cases, presentation-controller won't restore view hierarchy.
-//        toViewSuperview?.addSubview(toView)
       }
 
       let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1) {
