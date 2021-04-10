@@ -24,7 +24,32 @@ import UIKit
 
 open class FluidViewController: UIViewController, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
 
-  public struct Behavior: Hashable {
+  /**
+   - Warning: Under constructions
+   */
+  public struct PresentingTransition: Hashable {
+
+    public enum SlideInFrom: Hashable {
+      case right
+      case bottom
+    }
+
+    public enum Animation: Hashable {
+      case slideIn(SlideInFrom)
+    }
+
+    let animation: Animation
+
+    public static func slideIn(from: SlideInFrom) -> Self {
+      return .init(animation: .slideIn(from))
+    }
+
+  }
+
+  /**
+   - Warning: Under constructions
+   */
+  public struct DismissingIntereaction: Hashable {
 
     public enum Trigger: Hashable {
       case edge
@@ -42,8 +67,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     public let startFrom: StartFrom
 
     public init(
-      trigger: FluidViewController.Behavior.Trigger,
-      startFrom: FluidViewController.Behavior.StartFrom
+      trigger: FluidViewController.DismissingIntereaction.Trigger,
+      startFrom: FluidViewController.DismissingIntereaction.StartFrom
     ) {
       self.trigger = trigger
       self.startFrom = startFrom
@@ -53,7 +78,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   private var leftToRightTrackingContext: LeftToRightTrackingContext?
 
-  public let behaviors: Set<Behavior>
+  public let behaviors: Set<DismissingIntereaction>
 
   private var isTracking = false
 
@@ -62,7 +87,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   }
 
   public init(
-    behaviors: Set<Behavior> = [.init(trigger: .any, startFrom: .left)]
+    behaviors: Set<DismissingIntereaction> = [.init(trigger: .any, startFrom: .left)]
   ) {
     self.behaviors = behaviors
     super.init(nibName: nil, bundle: nil)
@@ -75,6 +100,9 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   ) {
     fatalError()
   }
+
+  public var presentingTransition: PresentingTransition = .slideIn(from: .bottom)
+  public var dismissingInteractions: Set<DismissingIntereaction> = []
 
   private func setUp() {
 
@@ -186,7 +214,17 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   }
 
   public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-    PresentingTransitionControllers.BottomToTopTransitionController()
+
+    switch presentingTransition.animation {
+    case .slideIn(let from):
+      switch from {
+      case .bottom:
+        return PresentingTransitionControllers.BottomToTopTransitionController()
+      case .right:
+        return PresentingTransitionControllers.RightToLeftTransitionController()
+      }
+    }
+
   }
 
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {

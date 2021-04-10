@@ -76,11 +76,11 @@ enum DismissingTransitionControllers {
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
-      let fromView = transitionContext.view(forKey: .from)!
+      let fromView = transitionContext.viewController(forKey: .from)!.view!
 
       if transitionContext.presentationStyle == .fullScreen {
         // to visible background view while transitioning.
-        transitionContext.containerView.insertSubview(transitionContext.view(forKey: .to)!, at: 0)
+        transitionContext.containerView.insertSubview(transitionContext.viewController(forKey: .to)!.view, at: 0)
       }
 
       let animator = UIViewPropertyAnimator(duration: 1, dampingRatio: 1) {
@@ -110,11 +110,11 @@ enum DismissingInteractiveTransitionControllers {
 
       self.currentTransitionContext = transitionContext
 
-      let fromView = transitionContext.view(forKey: .from)!
+      let fromView = transitionContext.viewController(forKey: .from)!.view!
 
       if transitionContext.presentationStyle == .fullScreen {
         // to visible background view while transitioning.
-        transitionContext.containerView.insertSubview(transitionContext.view(forKey: .to)!, at: 0)
+        transitionContext.containerView.insertSubview(transitionContext.viewController(forKey: .to)!.view, at: 0)
       }
 
       let animator = UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1) {

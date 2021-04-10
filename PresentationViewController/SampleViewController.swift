@@ -17,16 +17,29 @@ final class SampleViewController: FluidViewController {
 
     let hosting = UIHostingController(
       rootView: ContentView(
-        onTapDismiss: { [unowned self] in
-          self.dismiss(animated: true, completion: nil)
-        },
-        onTapPush: { [unowned self] in
-          let controller = SampleViewController(behaviors: [.init(trigger: .any, startFrom: .left)])
-          present(controller, animated: true, completion: nil)
-        },
-        onTapPresent: { [unowned self] in
-          let controller = SampleViewController(behaviors: [.init(trigger: .any, startFrom: .left)])
-          present(controller, animated: true, completion: nil)
+        onAction: { [unowned self] action in
+          switch action {
+          case .dismiss:
+            self.dismiss(animated: true, completion: nil)
+          case .push:
+            let controller = SampleViewController(behaviors: [.init(trigger: .any, startFrom: .left)])
+            controller.presentingTransition = .slideIn(from: .right)
+            present(controller, animated: true, completion: nil)
+          case .pushInCurrentContext:
+            let controller = SampleViewController(behaviors: [.init(trigger: .any, startFrom: .left)])
+            controller.presentingTransition = .slideIn(from: .right)
+            controller.modalPresentationStyle = .currentContext
+            present(controller, animated: true, completion: nil)
+          case .present:
+            let controller = SampleViewController(behaviors: [.init(trigger: .any, startFrom: .left)])
+            present(controller, animated: true, completion: nil)
+          case .presentInCurrentContext:
+            let controller = SampleViewController(behaviors: [.init(trigger: .any, startFrom: .left)])
+            controller.modalPresentationStyle = .currentContext
+            present(controller, animated: true, completion: nil)
+          case .makePresentationContext(let isOn):
+            self.definesPresentationContext = isOn
+          }
         }
       )
     )
