@@ -52,7 +52,7 @@
 
 /* Begin PBXFileReference section */
 		17AB01176E3BBB602A9AD9F5 /* Pods-Demo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Demo.debug.xcconfig"; path = "Target Support Files/Pods-Demo/Pods-Demo.debug.xcconfig"; sourceTree = "<group>"; };
-		4B61048325C999430058D264 /* Demo-FluidPresentation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Demo-FluidPresentation.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B61048325C999430058D264 /* Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B61048625C999430058D264 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4B61048A25C999430058D264 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4B61048D25C999430058D264 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				4B895B0926210D7D00EB7312 /* FluidPresentation */,
-				4B61048525C999430058D264 /* PresentationViewController */,
+				4B61048525C999430058D264 /* Demo */,
 				4B61048425C999430058D264 /* Products */,
 				E2635A8DE8B4B14D214A4A03 /* Pods */,
 				3DE27014C4315953E8A7A17B /* Frameworks */,
@@ -118,13 +118,13 @@
 		4B61048425C999430058D264 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4B61048325C999430058D264 /* Demo-FluidPresentation.app */,
+				4B61048325C999430058D264 /* Demo.app */,
 				4B895B0826210D7D00EB7312 /* FluidPresentation.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4B61048525C999430058D264 /* PresentationViewController */ = {
+		4B61048525C999430058D264 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
 				4B61048625C999430058D264 /* AppDelegate.swift */,
@@ -137,7 +137,7 @@
 				4B61049125C999440058D264 /* LaunchScreen.storyboard */,
 				4B61049425C999440058D264 /* Info.plist */,
 			);
-			path = PresentationViewController;
+			path = Demo;
 			sourceTree = "<group>";
 		};
 		4B895B0926210D7D00EB7312 /* FluidPresentation */ = {
@@ -179,9 +179,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4B61048225C999430058D264 /* Demo-FluidPresentation */ = {
+		4B61048225C999430058D264 /* Demo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4B61049725C999440058D264 /* Build configuration list for PBXNativeTarget "Demo-FluidPresentation" */;
+			buildConfigurationList = 4B61049725C999440058D264 /* Build configuration list for PBXNativeTarget "Demo" */;
 			buildPhases = (
 				399A991D4FEE23A73B1A54A5 /* [CP] Check Pods Manifest.lock */,
 				4B61047F25C999430058D264 /* Sources */,
@@ -195,9 +195,9 @@
 			dependencies = (
 				4B895B0E26210D7D00EB7312 /* PBXTargetDependency */,
 			);
-			name = "Demo-FluidPresentation";
+			name = Demo;
 			productName = PresentationViewController;
-			productReference = 4B61048325C999430058D264 /* Demo-FluidPresentation.app */;
+			productReference = 4B61048325C999430058D264 /* Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 		4B895B0726210D7D00EB7312 /* FluidPresentation */ = {
@@ -248,7 +248,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4B61048225C999430058D264 /* Demo-FluidPresentation */,
+				4B61048225C999430058D264 /* Demo */,
 				4B895B0726210D7D00EB7312 /* FluidPresentation */,
 			);
 		};
@@ -496,7 +496,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KU2QEJ9K3Z;
-				INFOPLIST_FILE = PresentationViewController/Info.plist;
+				INFOPLIST_FILE = Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -518,7 +518,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = KU2QEJ9K3Z;
-				INFOPLIST_FILE = PresentationViewController/Info.plist;
+				INFOPLIST_FILE = Demo/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -599,7 +599,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4B61049725C999440058D264 /* Build configuration list for PBXNativeTarget "Demo-FluidPresentation" */ = {
+		4B61049725C999440058D264 /* Build configuration list for PBXNativeTarget "Demo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4B61049825C999440058D264 /* Debug */,

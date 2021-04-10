@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4B61048225C999430058D264"
-               BuildableName = "Demo-FluidPresentation.app"
-               BlueprintName = "Demo-FluidPresentation"
+               BuildableName = "Demo.app"
+               BlueprintName = "Demo"
                ReferencedContainer = "container:FluidPresentation.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4B61048225C999430058D264"
-            BuildableName = "Demo-FluidPresentation.app"
-            BlueprintName = "Demo-FluidPresentation"
+            BuildableName = "Demo.app"
+            BlueprintName = "Demo"
             ReferencedContainer = "container:FluidPresentation.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -62,8 +62,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4B61048225C999430058D264"
-            BuildableName = "Demo-FluidPresentation.app"
-            BlueprintName = "Demo-FluidPresentation"
+            BuildableName = "Demo.app"
+            BlueprintName = "Demo"
             ReferencedContainer = "container:FluidPresentation.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
