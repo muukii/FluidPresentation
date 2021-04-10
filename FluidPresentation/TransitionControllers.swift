@@ -235,7 +235,6 @@ enum DismissingInteractiveTransitionControllers {
       Log.debug(.generic, "Finish Interactive Transition")
 
       guard
-        let context = currentTransitionContext,
         let animator = currentAnimator
       else {
 
@@ -255,7 +254,6 @@ enum DismissingInteractiveTransitionControllers {
       Log.debug(.generic, "Cancel Interactive Transition")
 
       guard
-        let context = currentTransitionContext,
         let animator = currentAnimator
       else {
 
@@ -273,7 +271,7 @@ enum DismissingInteractiveTransitionControllers {
     }
 
     func updateProgress(_ progress: CGFloat) {
-      Log.debug(.generic, "Update progress")
+//      Log.debug(.generic, "Update progress")
 
       guard
         let context = currentTransitionContext,

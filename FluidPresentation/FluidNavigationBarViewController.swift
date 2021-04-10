@@ -19,40 +19,42 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-import FluidPresentation
-import SwiftUI
+import Foundation
 import UIKit
 
-class ViewController: UIViewController {
+open class NavigatedFluidViewController: FluidViewController, UINavigationBarDelegate {
 
-  override func viewDidLoad() {
+  public let navigationBar: UINavigationBar
+
+  public init(
+    navigationBarClass: UINavigationBar.Type = UINavigationBar.self
+  ) {
+    self.navigationBar = navigationBarClass.init()
+    super.init()
+  }
+
+  open override func viewDidLoad() {
     super.viewDidLoad()
-    // Do any additional setup after loading the view.
+
+    view.addSubview(navigationBar)
+
+    navigationBar.translatesAutoresizingMaskIntoConstraints = false
+    NSLayoutConstraint.activate([
+      navigationBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+      navigationBar.rightAnchor.constraint(equalTo: view.rightAnchor),
+      navigationBar.leftAnchor.constraint(equalTo: view.leftAnchor),
+    ])
+
+    navigationBar.delegate = self
+    navigationBar.pushItem(navigationItem, animated: false)
   }
 
-  @IBAction func onTapAnyLeft(_ sender: Any) {
-
-    let controller = SampleViewController()
-    controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
-
-    present(controller, animated: true, completion: nil)
-
+  open override func viewDidLayoutSubviews() {
+    additionalSafeAreaInsets.top = navigationBar.frame.height
+    view.bringSubviewToFront(navigationBar)
   }
 
-  @IBAction func onTapEdgeLeft(_ sender: Any) {
-
-    let controller = SampleViewController()
-    controller.dismissingInteractions = [.init(trigger: .edge, startFrom: .left)]
-
-    present(controller, animated: true, completion: nil)
-
-  }
-
-  @IBAction func onTapNavigation(_ sender: Any) {
-
-    let controller = NavigationSampleViewController()
-    controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
-    present(controller, animated: true, completion: nil)
-
+  public func position(for bar: UIBarPositioning) -> UIBarPosition {
+    return .topAttached
   }
 }

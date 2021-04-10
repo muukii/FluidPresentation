@@ -76,9 +76,12 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   }
 
-  private var leftToRightTrackingContext: LeftToRightTrackingContext?
+  @available(*, unavailable, message: "Unsupported")
+  open override var navigationController: UINavigationController? {
+    super.navigationController
+  }
 
-  public let behaviors: Set<DismissingIntereaction>
+  private var leftToRightTrackingContext: LeftToRightTrackingContext?
 
   private var isTracking = false
 
@@ -88,12 +91,9 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   private let scrollController = ScrollController()
 
-  public init(
-    behaviors: Set<DismissingIntereaction> = [.init(trigger: .any, startFrom: .left)]
-  ) {
-    self.behaviors = behaviors
+  public init() {
     super.init(nibName: nil, bundle: nil)
-    setUp()
+    setupGestures()
   }
 
   @available(*, unavailable)
@@ -104,29 +104,42 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   }
 
   public var presentingTransition: PresentingTransition = .slideIn(from: .bottom)
-  public var dismissingInteractions: Set<DismissingIntereaction> = []
+  public var dismissingInteractions: Set<DismissingIntereaction> = [] {
+    didSet {
+      setupGestures()
+    }
+  }
 
   public var interactiveUnwindGestureRecognizer: UIPanGestureRecognizer?
 
   public var interactiveEdgeUnwindGestureRecognizer: UIScreenEdgePanGestureRecognizer?
 
-  private func setUp() {
+  private var registeredGestures: [UIGestureRecognizer] = []
+
+  private func setupGestures() {
 
     modalPresentationStyle = .fullScreen
     transitioningDelegate = self
 
+    registeredGestures.forEach {
+      view.removeGestureRecognizer($0)
+    }
+    registeredGestures = []
+
     do {
-      if behaviors.filter({ $0.trigger == .any }).isEmpty == false {
+      if dismissingInteractions.filter({ $0.trigger == .any }).isEmpty == false {
         let panGesture = _PanGestureRecognizer(target: self, action: #selector(handlePanGesture))
         view.addGestureRecognizer(panGesture)
         panGesture.delegate = self
         self.interactiveUnwindGestureRecognizer = panGesture
+
+        registeredGestures.append(panGesture)
       }
     }
 
     do {
 
-      behaviors
+      dismissingInteractions
         .filter {
           $0.trigger == .edge
         }
@@ -138,6 +151,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
             view.addGestureRecognizer(edgeGesture)
             edgeGesture.delegate = self
             self.interactiveEdgeUnwindGestureRecognizer = edgeGesture
+            registeredGestures.append(edgeGesture)
+
           }
         }
 

@@ -10,7 +10,13 @@ import Foundation
 import SwiftUI
 import TinyConstraints
 
-final class SampleViewController: FluidViewController {
+final class NavigationSampleViewController: NavigatedFluidViewController {
+
+  init() {
+    super.init()
+
+    navigationItem.leftBarButtonItem = UIBarButtonItem.init(barButtonSystemItem: .done, target: nil, action: nil)
+  }
 
   override func viewDidLoad() {
     super.viewDidLoad()
