@@ -207,7 +207,7 @@ enum DismissingTransitionControllers {
         toViewProperties.restore(in: toView)
       }
 
-      let animator = UIViewPropertyAnimator(duration: 0.65, dampingRatio: 1) {
+      let animator = UIViewPropertyAnimator(duration: 0.62, dampingRatio: 1) {
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
         fromView.alpha = 0
         toView.transform = .identity
@@ -277,7 +277,7 @@ enum DismissingInteractiveTransitionControllers {
         toViewProperties.restore(in: toView)
       }
 
-      let animator = UIViewPropertyAnimator(duration: 0.65, dampingRatio: 1) {
+      let animator = UIViewPropertyAnimator(duration: 0.62, dampingRatio: 1) {
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
         fromView.alpha = 0
         toView.transform = .identity
