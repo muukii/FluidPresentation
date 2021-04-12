@@ -28,6 +28,7 @@ struct ContentView: View {
   enum Action {
     case dismiss
     case push
+    case pushNavigationBar
     case pushInCurrentContext
     case present
     case presentInCurrentContext
@@ -74,6 +75,10 @@ struct ContentView: View {
 
             Button("Push - FullScreen") {
               onAction(.push)
+            }
+
+            Button("Push - FullScreen - Navigation") {
+              onAction(.pushNavigationBar)
             }
 
             Button("Push - CurrentContext") {

@@ -49,26 +49,29 @@ final class NavigationSampleViewController: NavigatedFluidViewController {
             self.dismiss(animated: true, completion: nil)
           case .push:
             let controller = SampleViewController()
-            controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
-            controller.presentingTransition = .slideIn(from: .right)
+            controller.setIdiom(.navigationPush(isScreenGestureEnabled: true))
+            present(controller, animated: true, completion: nil)
+          case .pushNavigationBar:
+            let controller = SampleViewController()
+            controller.setIdiom(.navigationPush(isScreenGestureEnabled: true))
             present(controller, animated: true, completion: nil)
           case .pushInCurrentContext:
             let controller = SampleViewController()
-            controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
-            controller.presentingTransition = .slideIn(from: .right)
+            controller.setIdiom(.navigationPush(isScreenGestureEnabled: true))
             controller.modalPresentationStyle = .currentContext
             present(controller, animated: true, completion: nil)
           case .present:
             let controller = SampleViewController()
-            controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
+            controller.setIdiom(.presentation)
             present(controller, animated: true, completion: nil)
           case .presentInCurrentContext:
             let controller = SampleViewController()
-            controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
+            controller.setIdiom(.presentation)
             controller.modalPresentationStyle = .currentContext
             present(controller, animated: true, completion: nil)
           case .makePresentationContext(let isOn):
             self.definesPresentationContext = isOn
+
           }
         }
       )

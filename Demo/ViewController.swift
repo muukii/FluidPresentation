@@ -34,7 +34,7 @@ class ViewController: UIViewController {
   @IBAction func onTapAnyLeft(_ sender: Any) {
 
     let controller = SampleViewController()
-    controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
+    controller.dismissingInteractions = [.init(trigger: .screen, startFrom: .left)]
 
     present(controller, animated: true, completion: nil)
 
@@ -52,7 +52,7 @@ class ViewController: UIViewController {
   @IBAction func onTapNavigation(_ sender: Any) {
 
     let controller = NavigationSampleViewController()
-    controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
+    controller.dismissingInteractions = [.init(trigger: .screen, startFrom: .left)]
     present(controller, animated: true, completion: nil)
 
   }

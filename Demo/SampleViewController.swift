@@ -19,7 +19,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import FluidPresentation
 import Foundation
 import SwiftUI
@@ -31,6 +30,7 @@ final class SampleViewController: FluidViewController {
     super.viewDidLoad()
 
     count += 1
+    title = "\(count)"
 
     accessibilityLabel = count.description
     view.accessibilityIdentifier = count.description
@@ -43,23 +43,28 @@ final class SampleViewController: FluidViewController {
             self.dismiss(animated: true, completion: nil)
           case .push:
             let controller = SampleViewController()
-            controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
-            controller.presentingTransition = .slideIn(from: .right)
+            controller.setIdiom(.navigationPush(isScreenGestureEnabled: true))
+            present(controller, animated: true, completion: nil)
+          case .pushNavigationBar:
+            let controller = NavigatedFluidViewController(
+              idiom: .navigationPush(),
+              bodyViewController: SampleViewController()
+            )
+            controller.setIdiom(.navigationPush(isScreenGestureEnabled: true))
             present(controller, animated: true, completion: nil)
           case .pushInCurrentContext:
             let controller = SampleViewController()
-            controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
-            controller.presentingTransition = .slideIn(from: .right)
             controller.modalPresentationStyle = .currentContext
+            controller.setIdiom(.navigationPush(isScreenGestureEnabled: true))
             present(controller, animated: true, completion: nil)
           case .present:
             let controller = SampleViewController()
-            controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
+            controller.setIdiom(.presentation)
             present(controller, animated: true, completion: nil)
           case .presentInCurrentContext:
             let controller = SampleViewController()
-            controller.dismissingInteractions = [.init(trigger: .any, startFrom: .left)]
             controller.modalPresentationStyle = .currentContext
+            controller.setIdiom(.presentation)
             present(controller, animated: true, completion: nil)
           case .makePresentationContext(let isOn):
             self.definesPresentationContext = isOn

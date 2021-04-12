@@ -26,7 +26,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   public enum Idiom {
     case presentation
-    case navigationPush
+    case navigationPush(isScreenGestureEnabled: Bool = false)
   }
 
   /**
@@ -79,8 +79,12 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   public struct DismissingIntereaction: Hashable {
 
     public enum Trigger: Hashable {
+
+      /// Available dismissing gesture in the edge of the screen.
       case edge
-      case any
+
+      /// Available dismissing gesture in screen anywhere.
+      case screen
     }
 
     public enum StartFrom: Hashable {
@@ -187,10 +191,16 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
       self.presentingTransition = .slideIn(from: .bottom)
       self.dismissingTransition = .slideOut(to: .bottom)
       self.dismissingInteractions = []
-    case .navigationPush:
+    case .navigationPush(let isScreenGestureEnabled):
       self.presentingTransition = .slideIn(from: .right)
       self.dismissingTransition = .slideOut(to: .right)
-      self.dismissingInteractions = [.init(trigger: .edge, startFrom: .left)]
+
+      if isScreenGestureEnabled {
+        self.dismissingInteractions = [.init(trigger: .screen, startFrom: .left)]
+      } else {
+        self.dismissingInteractions = [.init(trigger: .edge, startFrom: .left)]
+      }
+
     }
 
   }
@@ -208,7 +218,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     registeredGestures = []
 
     do {
-      if dismissingInteractions.filter({ $0.trigger == .any }).isEmpty == false {
+      if dismissingInteractions.filter({ $0.trigger == .screen }).isEmpty == false {
         let panGesture = _PanGestureRecognizer(target: self, action: #selector(handlePanGesture))
         view.addGestureRecognizer(panGesture)
         panGesture.delegate = self
@@ -242,6 +252,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   @objc
   private func handleEdgeLeftPanGesture(_ gesture: _EdgePanGestureRecognizer) {
+
+    guard parent == nil else { return }
 
     switch gesture.state {
     case .possible:
@@ -285,6 +297,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   @objc
   private func handlePanGesture(_ gesture: _PanGestureRecognizer) {
+
+    guard parent == nil else { return }
 
     switch gesture.state {
     case .possible:

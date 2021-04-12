@@ -19,7 +19,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import UIKit
 
 private final class DropShadowContainerView: UIView {
@@ -73,6 +72,29 @@ private struct ViewProperties {
 
 }
 
+func _makeResorationClosure(view: UIView?) -> () -> Void {
+  guard let view = view else { return {} }
+  let properties = ViewProperties(from: view)
+  return { [weak view] in
+    guard let view = view else { return }
+    properties.restore(in: view)
+  }
+}
+
+func _makeResorationClosure(views: [UIView?]) -> () -> Void {
+
+  let restorations = views.map {
+    _makeResorationClosure(view: $0)
+  }
+
+  return {
+    restorations.forEach {
+      $0()
+    }
+  }
+
+}
+
 enum PresentingTransitionControllers {
 
   final class BottomToTopTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
@@ -111,19 +133,43 @@ enum PresentingTransitionControllers {
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
-      let toView = transitionContext.viewController(forKey: .to)!.view!
-      let fromView = transitionContext.viewController(forKey: .from)!.view!
+      let fromViewController = transitionContext.viewController(forKey: .from)!
+      let toViewController = transitionContext.viewController(forKey: .to)!
+
+      let fromNavigationBar = (fromViewController as? NavigatedFluidViewController)?.navigationBar
+      let toNavigationBar = (toViewController as? NavigatedFluidViewController)?.navigationBar
+
+      let fromView = fromViewController.view!
+      let toView = toViewController.view!
 
       transitionContext.containerView.backgroundColor = .white
       transitionContext.containerView.addSubview(fromView)
       transitionContext.containerView.addSubview(toView)
 
-      let fromViewProperties = ViewProperties(from: fromView)
+      let restoration = _makeResorationClosure(views: [
+        toView,
+        fromView,
+        fromNavigationBar,
+        toNavigationBar,
+      ])
 
-      toView.transform = .init(translationX: toView.bounds.width, y: 0)
-      toView.alpha = 0
+      makeInitialState: do {
+        if let _ = fromNavigationBar, let toNavigationBar = toNavigationBar {
+          /// NavigationBar transition
+          toNavigationBar.transform = .init(translationX: -fromView.bounds.width, y: 0)
+        }
+        toView.transform = .init(translationX: toView.bounds.width, y: 0)
+        toView.alpha = 0
+      }
 
       let animator = UIViewPropertyAnimator(duration: 0.65, dampingRatio: 1) {
+
+        if let fromNavigationBar = fromNavigationBar, let toNavigationBar = toNavigationBar {
+          /// NavigationBar transition
+          fromNavigationBar.transform = .init(translationX: fromView.bounds.width, y: 0)
+          toNavigationBar.transform = .identity
+        }
+
         fromView.transform = .init(translationX: -toView.bounds.width, y: 0)
         fromView.alpha = 0
         toView.transform = .identity
@@ -131,7 +177,7 @@ enum PresentingTransitionControllers {
       }
 
       animator.addCompletion { _ in
-        fromViewProperties.restore(in: fromView)
+        restoration()
         transitionContext.completeTransition(true)
       }
 
@@ -183,10 +229,15 @@ enum DismissingTransitionControllers {
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
-      let fromView = transitionContext.viewController(forKey: .from)!.view!
+      let fromViewController = transitionContext.viewController(forKey: .from)!
+      let toViewController = transitionContext.viewController(forKey: .to)!
 
-      let toView = transitionContext.viewController(forKey: .to)!.view!
-      let restore = resorationHierarchy(view: toView)
+      let fromNavigationBar = (fromViewController as? NavigatedFluidViewController)?.navigationBar
+      let toNavigationBar = (toViewController as? NavigatedFluidViewController)?.navigationBar
+
+      let fromView = fromViewController.view!
+      let toView = toViewController.view!
+      let restoreHierarchy = resorationHierarchy(view: toView)
 
       assert(fromView.bounds.width == transitionContext.containerView.bounds.width)
       assert(toView.bounds.width == transitionContext.containerView.bounds.width)
@@ -195,19 +246,36 @@ enum DismissingTransitionControllers {
       transitionContext.containerView.addSubview(toView)
       transitionContext.containerView.addSubview(fromView)
 
-      let toViewProperties = ViewProperties(from: toView)
+      let restoreViewProperties = _makeResorationClosure(views: [
+        toView,
+        fromView,
+        fromNavigationBar,
+        toNavigationBar,
+      ])
 
       makeInitialState: do {
         toView.transform = .init(translationX: -fromView.bounds.width, y: 0)
         toView.alpha = 0
+
+        if let _ = fromNavigationBar, let toNavigationBar = toNavigationBar {
+          /// NavigationBar transition
+          toNavigationBar.transform = .init(translationX: fromView.bounds.width, y: 0)
+        }
       }
 
       func cleanup() {
-        restore()
-        toViewProperties.restore(in: toView)
+        restoreHierarchy()
+        restoreViewProperties()
       }
 
       let animator = UIViewPropertyAnimator(duration: 0.62, dampingRatio: 1) {
+
+        if let fromNavigationBar = fromNavigationBar, let toNavigationBar = toNavigationBar {
+          /// NavigationBar transition
+          fromNavigationBar.transform = .init(translationX: -fromView.bounds.width, y: 0)
+          toNavigationBar.transform = .identity
+        }
+
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
         fromView.alpha = 0
         toView.transform = .identity
@@ -253,10 +321,16 @@ enum DismissingInteractiveTransitionControllers {
 
       self.currentTransitionContext = transitionContext
 
-      let fromView = transitionContext.viewController(forKey: .from)!.view!
+      let fromViewController = transitionContext.viewController(forKey: .from)!
+      let toViewController = transitionContext.viewController(forKey: .to)!
 
-      let toView = transitionContext.viewController(forKey: .to)!.view!
-      let restore = resorationHierarchy(view: toView)
+      let fromNavigationBar = (fromViewController as? NavigatedFluidViewController)?.navigationBar
+      let toNavigationBar = (toViewController as? NavigatedFluidViewController)?.navigationBar
+
+      let fromView = fromViewController.view!
+      let toView = toViewController.view!
+
+      let restoreHierarchy = resorationHierarchy(view: toView)
 
       assert(fromView.bounds.width == transitionContext.containerView.bounds.width)
       assert(toView.bounds.width == transitionContext.containerView.bounds.width)
@@ -265,19 +339,36 @@ enum DismissingInteractiveTransitionControllers {
       transitionContext.containerView.addSubview(toView)
       transitionContext.containerView.addSubview(fromView)
 
-      let toViewProperties = ViewProperties(from: toView)
+      let restoreViewProperties = _makeResorationClosure(views: [
+        toView,
+        fromView,
+        fromNavigationBar,
+        toNavigationBar,
+      ])
 
       makeInitialState: do {
         toView.transform = .init(translationX: -fromView.bounds.width, y: 0)
         toView.alpha = 0
+
+        if let _ = fromNavigationBar, let toNavigationBar = toNavigationBar {
+          /// NavigationBar transition
+          toNavigationBar.transform = .init(translationX: fromView.bounds.width, y: 0)
+        }
       }
 
       func cleanup() {
-        restore()
-        toViewProperties.restore(in: toView)
+        restoreHierarchy()
+        restoreViewProperties()
       }
 
       let animator = UIViewPropertyAnimator(duration: 0.62, dampingRatio: 1) {
+
+        if let fromNavigationBar = fromNavigationBar, let toNavigationBar = toNavigationBar {
+          /// NavigationBar transition
+          fromNavigationBar.transform = .init(translationX: -fromView.bounds.width, y: 0)
+          toNavigationBar.transform = .identity
+        }
+
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
         fromView.alpha = 0
         toView.transform = .identity
@@ -349,7 +440,7 @@ enum DismissingInteractiveTransitionControllers {
     }
 
     func updateProgress(_ progress: CGFloat) {
-//      Log.debug(.generic, "Update progress")
+      //      Log.debug(.generic, "Update progress")
 
       guard
         let context = currentTransitionContext,
