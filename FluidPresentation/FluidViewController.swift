@@ -19,11 +19,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-
 import Foundation
 import UIKit
 
 open class FluidViewController: UIViewController, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
+
+  public enum Idiom {
+    case presentation
+    case navigationPush
+  }
 
   /**
    - Warning: Under constructions
@@ -77,6 +81,10 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   }
 
+  // MARK: - Properties
+
+  public let bodyViewController: UIViewController?
+
   @available(*, unavailable, message: "Unsupported")
   open override var navigationController: UINavigationController? {
     super.navigationController
@@ -92,22 +100,12 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   private let scrollController = ScrollController()
 
-  public init() {
-    super.init(nibName: nil, bundle: nil)
-    setupGestures()
-  }
-
-  @available(*, unavailable)
-  public required init?(
-    coder: NSCoder
-  ) {
-    fatalError()
-  }
-
   public var presentingTransition: PresentingTransition = .slideIn(from: .bottom)
   public var dismissingInteractions: Set<DismissingIntereaction> = [] {
     didSet {
-      setupGestures()
+      if isViewLoaded {
+        setupGestures()
+      }
     }
   }
 
@@ -117,7 +115,63 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   private var registeredGestures: [UIGestureRecognizer] = []
 
+  // MARK: - Initializers
+
+  public init(
+    idiom: Idiom? = nil,
+    bodyViewController: UIViewController? = nil
+  ) {
+    self.bodyViewController = bodyViewController
+    super.init(nibName: nil, bundle: nil)
+    setIdiom(idiom ?? .presentation)
+  }
+
+  @available(*, unavailable)
+  public required init?(
+    coder: NSCoder
+  ) {
+    fatalError()
+  }
+
+  // MARK: - Functions
+
+  open override func viewDidLoad() {
+    super.viewDidLoad()
+
+    setupGestures()
+
+    if let bodyViewController = bodyViewController {
+      addChild(bodyViewController)
+      view.addSubview(bodyViewController.view)
+      NSLayoutConstraint.activate([
+        bodyViewController.view.topAnchor.constraint(equalTo: view.topAnchor),
+        bodyViewController.view.rightAnchor.constraint(equalTo: view.rightAnchor),
+        bodyViewController.view.leftAnchor.constraint(equalTo: view.leftAnchor),
+        bodyViewController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+      ])
+      bodyViewController.didMove(toParent: self)
+    }
+  }
+
+  public func setIdiom(_ idiom: Idiom) {
+
+    switch idiom {
+    case .presentation:
+      self.presentingTransition = .slideIn(from: .bottom)
+      self.dismissingInteractions = []
+    case .navigationPush:
+      self.presentingTransition = .slideIn(from: .right)
+      self.dismissingInteractions = [.init(trigger: .edge, startFrom: .left)]
+    }
+
+  }
+
   private func setupGestures() {
+
+    if leftToRightTrackingContext != nil {
+      assertionFailure("Unable to set gestures up while transitioning.")
+      return
+    }
 
     modalPresentationStyle = .fullScreen
     transitioningDelegate = self

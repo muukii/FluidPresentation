@@ -27,10 +27,12 @@ open class NavigatedFluidViewController: FluidViewController, UINavigationBarDel
   public let navigationBar: UINavigationBar
 
   public init(
+    idiom: Idiom? = nil,
+    bodyViewController: UIViewController? = nil,
     navigationBarClass: UINavigationBar.Type = UINavigationBar.self
   ) {
     self.navigationBar = navigationBarClass.init()
-    super.init()
+    super.init(idiom: idiom, bodyViewController: bodyViewController)
   }
 
   open override func viewDidLoad() {
@@ -46,7 +48,13 @@ open class NavigatedFluidViewController: FluidViewController, UINavigationBarDel
     ])
 
     navigationBar.delegate = self
-    navigationBar.pushItem(navigationItem, animated: false)
+
+    if let bodyViewController = bodyViewController {
+      navigationBar.pushItem(bodyViewController.navigationItem, animated: false)
+    } else {
+      navigationBar.pushItem(navigationItem, animated: false)
+    }
+
   }
 
   open override func viewDidLayoutSubviews() {
