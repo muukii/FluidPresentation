@@ -175,6 +175,69 @@ enum DismissingTransitionControllers {
 
   }
 
+  final class LeftToRightTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
+
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+      0
+    }
+
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+
+      let fromView = transitionContext.viewController(forKey: .from)!.view!
+
+      let toView = transitionContext.viewController(forKey: .to)!.view!
+      let restore = resorationHierarchy(view: toView)
+
+      assert(fromView.bounds.width == transitionContext.containerView.bounds.width)
+      assert(toView.bounds.width == transitionContext.containerView.bounds.width)
+
+      transitionContext.containerView.backgroundColor = .white
+      transitionContext.containerView.addSubview(toView)
+      transitionContext.containerView.addSubview(fromView)
+
+      let toViewProperties = ViewProperties(from: toView)
+
+      makeInitialState: do {
+        toView.transform = .init(translationX: -fromView.bounds.width, y: 0)
+        toView.alpha = 0
+      }
+
+      func cleanup() {
+        restore()
+        toViewProperties.restore(in: toView)
+      }
+
+      let animator = UIViewPropertyAnimator(duration: 0.65, dampingRatio: 1) {
+        fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
+        fromView.alpha = 0
+        toView.transform = .identity
+        toView.alpha = 1
+      }
+
+      animator.addCompletion { position in
+        switch position {
+        case .current:
+          assertionFailure()
+          // TODO: ???
+          break
+        case .end:
+          cleanup()
+          transitionContext.completeTransition(true)
+        case .start:
+          cleanup()
+          transitionContext.completeTransition(false)
+        @unknown default:
+          fatalError()
+        }
+
+      }
+
+      animator.startAnimation()
+
+    }
+
+  }
+
 }
 
 enum DismissingInteractiveTransitionControllers {

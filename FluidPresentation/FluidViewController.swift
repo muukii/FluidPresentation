@@ -54,6 +54,28 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   /**
    - Warning: Under constructions
    */
+  public struct DismissingTransition: Hashable {
+
+    public enum SlideOutTo: Hashable {
+      case right
+      case bottom
+    }
+
+    public enum Animation: Hashable {
+      case slideOut(SlideOutTo)
+    }
+
+    let animation: Animation
+
+    public static func slideOut(to: SlideOutTo) -> Self {
+      return .init(animation: .slideOut(to))
+    }
+
+  }
+
+  /**
+   - Warning: Under constructions
+   */
   public struct DismissingIntereaction: Hashable {
 
     public enum Trigger: Hashable {
@@ -101,6 +123,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   private let scrollController = ScrollController()
 
   public var presentingTransition: PresentingTransition = .slideIn(from: .bottom)
+  public var dismissingTransition: DismissingTransition = .slideOut(to: .bottom)
+
   public var dismissingInteractions: Set<DismissingIntereaction> = [] {
     didSet {
       if isViewLoaded {
@@ -124,6 +148,9 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     self.bodyViewController = bodyViewController
     super.init(nibName: nil, bundle: nil)
     setIdiom(idiom ?? .presentation)
+
+    modalPresentationStyle = .fullScreen
+    transitioningDelegate = self
   }
 
   @available(*, unavailable)
@@ -158,9 +185,11 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     switch idiom {
     case .presentation:
       self.presentingTransition = .slideIn(from: .bottom)
+      self.dismissingTransition = .slideOut(to: .bottom)
       self.dismissingInteractions = []
     case .navigationPush:
       self.presentingTransition = .slideIn(from: .right)
+      self.dismissingTransition = .slideOut(to: .right)
       self.dismissingInteractions = [.init(trigger: .edge, startFrom: .left)]
     }
 
@@ -172,9 +201,6 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
       assertionFailure("Unable to set gestures up while transitioning.")
       return
     }
-
-    modalPresentationStyle = .fullScreen
-    transitioningDelegate = self
 
     registeredGestures.forEach {
       view.removeGestureRecognizer($0)
@@ -348,9 +374,15 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-    Log.debug(.generic, "Start Dismiss")
-
-    return DismissingTransitionControllers.TopToBottomTransitionController()
+    switch dismissingTransition.animation {
+    case .slideOut(let to):
+      switch to {
+      case .bottom:
+        return DismissingTransitionControllers.TopToBottomTransitionController()
+      case .right:
+        return DismissingTransitionControllers.LeftToRightTransitionController()
+      }
+    }
   }
 
   public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
