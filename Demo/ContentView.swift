@@ -32,6 +32,7 @@ struct ContentView: View {
     case pushInCurrentContext
     case present
     case presentInCurrentContext
+    case presentInOverCurrentContext
     case makePresentationContext(Bool)
   }
 
@@ -91,6 +92,10 @@ struct ContentView: View {
 
             Button("Present - CurrentContext") {
               onAction(.presentInCurrentContext)
+            }
+
+            Button("Present - OverCurrentContext") {
+              onAction(.presentInOverCurrentContext)
             }
 
           }

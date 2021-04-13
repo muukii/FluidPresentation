@@ -66,6 +66,11 @@ final class SampleViewController: FluidViewController {
             controller.modalPresentationStyle = .currentContext
             controller.setIdiom(.presentation)
             present(controller, animated: true, completion: nil)
+          case .presentInOverCurrentContext:
+            let controller = SampleViewController()
+            controller.modalPresentationStyle = .overCurrentContext
+            controller.setIdiom(.presentation)
+            present(controller, animated: true, completion: nil)
           case .makePresentationContext(let isOn):
             self.definesPresentationContext = isOn
           }

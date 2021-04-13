@@ -69,6 +69,11 @@ final class NavigationSampleViewController: NavigatedFluidViewController {
             controller.setIdiom(.presentation)
             controller.modalPresentationStyle = .currentContext
             present(controller, animated: true, completion: nil)
+          case .presentInOverCurrentContext:
+            let controller = SampleViewController()
+            controller.modalPresentationStyle = .overCurrentContext
+            controller.setIdiom(.presentation)
+            present(controller, animated: true, completion: nil)
           case .makePresentationContext(let isOn):
             self.definesPresentationContext = isOn
 
