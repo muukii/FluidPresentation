@@ -56,4 +56,10 @@ class ViewController: UIViewController {
     present(controller, animated: true, completion: nil)
 
   }
+
+  @IBAction func onTapTab(_ sender: Any) {
+
+    let rootViewController = AppRootViewController()
+    view.window?.rootViewController = rootViewController
+  }
 }

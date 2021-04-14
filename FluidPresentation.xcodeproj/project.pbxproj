@@ -18,6 +18,15 @@
 		4B895B1626210DA200EB7312 /* FluidViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B2792620409900CA3D45 /* FluidViewController.swift */; };
 		4B895B1726210DA200EB7312 /* TransitionControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */; };
 		4B895B2226210F1700EB7312 /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B895B2126210F1700EB7312 /* SampleViewController.swift */; };
+		4BB357A12627171200C8387F /* AppRootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB357A02627171200C8387F /* AppRootViewController.swift */; };
+		4BB357A62627173600C8387F /* AppTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB357A52627173600C8387F /* AppTabBarController.swift */; };
+		4BB357A92627176D00C8387F /* AppOtherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB357A82627176D00C8387F /* AppOtherViewController.swift */; };
+		4BB357AD262717DF00C8387F /* StackScrollNodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB357AB262717BE00C8387F /* StackScrollNodeViewController.swift */; };
+		4BB357AE262717DF00C8387F /* Components.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB3579D2627153D00C8387F /* Components.swift */; };
+		4BB357AF262717DF00C8387F /* StackScrollNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB3579C2627152F00C8387F /* StackScrollNode.swift */; };
+		4BB357B22627182900C8387F /* AppNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB357B12627182900C8387F /* AppNotificationViewController.swift */; };
+		4BB357B6262718F900C8387F /* AppSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB357B5262718F900C8387F /* AppSearchViewController.swift */; };
+		4BB357B926271A8300C8387F /* CustomNavigatedFluidViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BB357B826271A8300C8387F /* CustomNavigatedFluidViewController.swift */; };
 		4BF23D5426218B1B001D508B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF23D5326218B1B001D508B /* ContentView.swift */; };
 		4BF23D5E2621B11D001D508B /* ScrollView+Handling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF23D5D2621B11D001D508B /* ScrollView+Handling.swift */; };
 		4BF23D612621B857001D508B /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF23D602621B857001D508B /* Log.swift */; };
@@ -65,6 +74,15 @@
 		4B895B2126210F1700EB7312 /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
 		4BA9B2792620409900CA3D45 /* FluidViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FluidViewController.swift; sourceTree = "<group>"; };
 		4BA9B27C26204CBB00CA3D45 /* TransitionControllers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionControllers.swift; sourceTree = "<group>"; };
+		4BB3579C2627152F00C8387F /* StackScrollNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackScrollNode.swift; sourceTree = "<group>"; };
+		4BB3579D2627153D00C8387F /* Components.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Components.swift; sourceTree = "<group>"; };
+		4BB357A02627171200C8387F /* AppRootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootViewController.swift; sourceTree = "<group>"; };
+		4BB357A52627173600C8387F /* AppTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTabBarController.swift; sourceTree = "<group>"; };
+		4BB357A82627176D00C8387F /* AppOtherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppOtherViewController.swift; sourceTree = "<group>"; };
+		4BB357AB262717BE00C8387F /* StackScrollNodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackScrollNodeViewController.swift; sourceTree = "<group>"; };
+		4BB357B12627182900C8387F /* AppNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNotificationViewController.swift; sourceTree = "<group>"; };
+		4BB357B5262718F900C8387F /* AppSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSearchViewController.swift; sourceTree = "<group>"; };
+		4BB357B826271A8300C8387F /* CustomNavigatedFluidViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigatedFluidViewController.swift; sourceTree = "<group>"; };
 		4BF23D5326218B1B001D508B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		4BF23D5D2621B11D001D508B /* ScrollView+Handling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScrollView+Handling.swift"; sourceTree = "<group>"; };
 		4BF23D602621B857001D508B /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -127,6 +145,8 @@
 		4B61048525C999430058D264 /* Demo */ = {
 			isa = PBXGroup;
 			children = (
+				4BB3579F2627170500C8387F /* App */,
+				4BB3579B2627152700C8387F /* Texture */,
 				4B61048625C999430058D264 /* AppDelegate.swift */,
 				4B61048A25C999430058D264 /* ViewController.swift */,
 				4BF23D5326218B1B001D508B /* ContentView.swift */,
@@ -152,6 +172,29 @@
 				4B895B0B26210D7D00EB7312 /* Info.plist */,
 			);
 			path = FluidPresentation;
+			sourceTree = "<group>";
+		};
+		4BB3579B2627152700C8387F /* Texture */ = {
+			isa = PBXGroup;
+			children = (
+				4BB357AB262717BE00C8387F /* StackScrollNodeViewController.swift */,
+				4BB3579D2627153D00C8387F /* Components.swift */,
+				4BB3579C2627152F00C8387F /* StackScrollNode.swift */,
+			);
+			path = Texture;
+			sourceTree = "<group>";
+		};
+		4BB3579F2627170500C8387F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				4BB357A02627171200C8387F /* AppRootViewController.swift */,
+				4BB357A52627173600C8387F /* AppTabBarController.swift */,
+				4BB357B5262718F900C8387F /* AppSearchViewController.swift */,
+				4BB357A82627176D00C8387F /* AppOtherViewController.swift */,
+				4BB357B12627182900C8387F /* AppNotificationViewController.swift */,
+				4BB357B826271A8300C8387F /* CustomNavigatedFluidViewController.swift */,
+			);
+			path = App;
 			sourceTree = "<group>";
 		};
 		E2635A8DE8B4B14D214A4A03 /* Pods */ = {
@@ -322,10 +365,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BF23D6E26221103001D508B /* NavigationSampleViewController.swift in Sources */,
+				4BB357A92627176D00C8387F /* AppOtherViewController.swift in Sources */,
 				4B61048B25C999430058D264 /* ViewController.swift in Sources */,
+				4BB357A62627173600C8387F /* AppTabBarController.swift in Sources */,
+				4BB357AF262717DF00C8387F /* StackScrollNode.swift in Sources */,
+				4BB357B6262718F900C8387F /* AppSearchViewController.swift in Sources */,
+				4BB357A12627171200C8387F /* AppRootViewController.swift in Sources */,
 				4B61048725C999430058D264 /* AppDelegate.swift in Sources */,
 				4BF23D5426218B1B001D508B /* ContentView.swift in Sources */,
+				4BB357AE262717DF00C8387F /* Components.swift in Sources */,
+				4BB357B22627182900C8387F /* AppNotificationViewController.swift in Sources */,
 				4B895B2226210F1700EB7312 /* SampleViewController.swift in Sources */,
+				4BB357B926271A8300C8387F /* CustomNavigatedFluidViewController.swift in Sources */,
+				4BB357AD262717DF00C8387F /* StackScrollNodeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

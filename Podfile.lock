@@ -1,20 +1,28 @@
 PODS:
   - Reveal-SDK (28)
+  - Texture/Core (3.0.0)
+  - TextureSwiftSupport (3.4.0):
+    - Texture/Core (~> 3)
   - TinyConstraints (4.0.1)
 
 DEPENDENCIES:
   - Reveal-SDK
+  - TextureSwiftSupport
   - TinyConstraints
 
 SPEC REPOS:
   trunk:
     - Reveal-SDK
+    - Texture
+    - TextureSwiftSupport
     - TinyConstraints
 
 SPEC CHECKSUMS:
   Reveal-SDK: 1a2a678648fc4d277bad71c86d15530424324288
+  Texture: 2f109e937850d94d1d07232041c9c7313ccddb81
+  TextureSwiftSupport: 9f630cd5056e90991bc0d473a3d77f05a891831c
   TinyConstraints: 8dd91295e56797648c7bc335dd20e1d91ec4c192
 
-PODFILE CHECKSUM: b3c1712b1f41818566e9c5fa0361491330bf2837
+PODFILE CHECKSUM: d54f4a2840672f40d827351459d7901cc0e4f46c
 
 COCOAPODS: 1.10.1

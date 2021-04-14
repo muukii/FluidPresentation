@@ -7,6 +7,7 @@ target 'Demo' do
 
   pod 'Reveal-SDK'
   pod 'TinyConstraints'
+  pod 'TextureSwiftSupport'
   # Pods for PresentationViewController
 
 end
