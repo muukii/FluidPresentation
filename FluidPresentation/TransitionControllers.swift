@@ -289,11 +289,11 @@ enum DismissingTransitionControllers {
           // TODO: ???
           break
         case .end:
-          cleanup()
           transitionContext.completeTransition(true)
-        case .start:
           cleanup()
+        case .start:
           transitionContext.completeTransition(false)
+          cleanup()
         @unknown default:
           fatalError()
         }
@@ -382,13 +382,13 @@ enum DismissingInteractiveTransitionControllers {
           // TODO: ???
           break
         case .end:
-          cleanup()
           transitionContext.finishInteractiveTransition()
           transitionContext.completeTransition(true)
-        case .start:
           cleanup()
+        case .start:
           transitionContext.cancelInteractiveTransition()
           transitionContext.completeTransition(false)
+          cleanup()
         @unknown default:
           fatalError()
         }

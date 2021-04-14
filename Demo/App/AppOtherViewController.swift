@@ -24,6 +24,8 @@ final class AppOtherController: StackScrollNodeViewController {
 
         let controller = AppNotificationController().wrappingNavigatedFluidViewController(idiom: .navigationPush())
 
+        controller.dismissingInteractions = [.init(trigger: .screen, startFrom: .left)]
+
         controller.modalPresentationStyle = .currentContext
 
         self.present(controller, animated: true, completion: nil)
