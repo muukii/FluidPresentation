@@ -369,6 +369,12 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   }
 
   public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+
+    if gestureRecognizer is UIScreenEdgePanGestureRecognizer {
+
+      return (otherGestureRecognizer is UIScreenEdgePanGestureRecognizer) == false
+    }
+
     return true
   }
 
