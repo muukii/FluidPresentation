@@ -263,7 +263,7 @@ enum DismissingTransitionControllers {
         }
       }
 
-      func cleanup() {
+      func resoreViewStates() {
         restoreHierarchy()
         restoreViewProperties()
       }
@@ -290,10 +290,18 @@ enum DismissingTransitionControllers {
           break
         case .end:
           transitionContext.completeTransition(true)
-          cleanup()
+          /**
+           This must be after `completeTransition`.
+           In some cases, the presentation controller removes `toView` after completion. I don't know why 🤷🏻‍♂️.
+           */
+          resoreViewStates()
         case .start:
           transitionContext.completeTransition(false)
-          cleanup()
+          /**
+           This must be after `completeTransition`.
+           In some cases, the presentation controller removes `toView` after completion. I don't know why 🤷🏻‍♂️.
+           */
+          resoreViewStates()
         @unknown default:
           fatalError()
         }
@@ -356,7 +364,7 @@ enum DismissingInteractiveTransitionControllers {
         }
       }
 
-      func cleanup() {
+      func restoreViewStates() {
         restoreHierarchy()
         restoreViewProperties()
       }
@@ -384,11 +392,19 @@ enum DismissingInteractiveTransitionControllers {
         case .end:
           transitionContext.finishInteractiveTransition()
           transitionContext.completeTransition(true)
-          cleanup()
+          /**
+           This must be after `completeTransition`.
+           In some cases, the presentation controller removes `toView` after completion. I don't know why 🤷🏻‍♂️.
+           */
+          restoreViewStates()
         case .start:
           transitionContext.cancelInteractiveTransition()
           transitionContext.completeTransition(false)
-          cleanup()
+          /**
+           This must be after `completeTransition`.
+           In some cases, the presentation controller removes `toView` after completion. I don't know why 🤷🏻‍♂️.
+           */
+          restoreViewStates()
         @unknown default:
           fatalError()
         }
