@@ -24,6 +24,7 @@ import UIKit
 
 open class FluidViewController: UIViewController, UIViewControllerTransitioningDelegate, UIGestureRecognizerDelegate {
 
+  /// Indicating the transition how it animates.
   public enum Idiom {
     case presentation
     case navigationPush(isScreenGestureEnabled: Bool = false)
@@ -130,6 +131,11 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   // MARK: - Initializers
 
+  /// Creates an instance
+  ///
+  /// - Parameters:
+  ///   - idiom:
+  ///   - bodyViewController: a view controller that displays as a child view controller. It helps a case of can't create a subclass of FluidViewController.
   public init(
     idiom: Idiom? = nil,
     bodyViewController: UIViewController? = nil
@@ -169,6 +175,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     }
   }
 
+  /// Set presenting and dismissing transition according to the idiom
+  /// - Parameter idiom: 
   public func setIdiom(_ idiom: Idiom) {
 
     switch idiom {
