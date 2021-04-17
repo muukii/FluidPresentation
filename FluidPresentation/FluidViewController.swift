@@ -32,45 +32,30 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   /**
    - Warning: Under constructions
    */
-  public struct PresentingTransition: Hashable {
+  public enum PresentingTransition {
 
     public enum SlideInFrom: Hashable {
       case right
       case bottom
     }
 
-    public enum Animation: Hashable {
-      case slideIn(SlideInFrom)
-    }
-
-    let animation: Animation
-
-    public static func slideIn(from: SlideInFrom) -> Self {
-      return .init(animation: .slideIn(from))
-    }
+    case slideIn(from: SlideInFrom)
+    case custom(using: () -> UIViewControllerAnimatedTransitioning)
 
   }
 
   /**
    - Warning: Under constructions
    */
-  public struct DismissingTransition: Hashable {
+  public enum DismissingTransition {
 
     public enum SlideOutTo: Hashable {
       case right
       case bottom
     }
 
-    public enum Animation: Hashable {
-      case slideOut(SlideOutTo)
-    }
-
-    let animation: Animation
-
-    public static func slideOut(to: SlideOutTo) -> Self {
-      return .init(animation: .slideOut(to))
-    }
-
+    case slideOut(to: SlideOutTo)
+    case custom(using: () -> UIViewControllerAnimatedTransitioning)
   }
 
   /**
@@ -380,7 +365,9 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-    switch presentingTransition.animation {
+    switch presentingTransition {
+    case .custom(let transitionController):
+      return transitionController()
     case .slideIn(let from):
       switch from {
       case .bottom:
@@ -394,7 +381,9 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-    switch dismissingTransition.animation {
+    switch dismissingTransition {
+    case .custom(let transitionController):
+      return transitionController()
     case .slideOut(let to):
       switch to {
       case .bottom:
