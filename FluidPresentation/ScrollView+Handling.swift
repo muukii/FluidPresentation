@@ -94,8 +94,6 @@ final class ScrollController {
 
     previousValue = scrollView.contentOffset
 
-    print(proposedValue)
-
     scrollView.setContentOffset(proposedValue, animated: false)
     scrollView.showsVerticalScrollIndicator = false
   }

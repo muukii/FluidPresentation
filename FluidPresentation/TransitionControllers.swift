@@ -37,17 +37,25 @@ private final class DropShadowContainerView: UIView {
 
 }
 
-private func resorationHierarchy(view: UIView) -> () -> Void {
+private func resorationHierarchyForDismissing(toView view: UIView) -> (Bool) -> Void {
 
   guard let superview = view.superview else {
-    return {}
+    return { [weak view] didComplete in
+      if !didComplete {
+        /**
+         If toView has not superview, needs to be removed from superview to prevent vanishing toView in the next time dismissing completed.
+         - toView would be added in UITransitionView in the current context.
+         */
+        view?.removeFromSuperview()
+      }
+    }
   }
 
   guard let index = superview.subviews.firstIndex(of: view) else {
-    return {}
+    return { _ in }
   }
 
-  return { [weak superview, weak view] in
+  return { [weak superview, weak view] didComplete in
     guard let superview = superview, let view = view else { return }
     superview.insertSubview(view, at: index)
   }
@@ -201,7 +209,7 @@ enum DismissingTransitionControllers {
       let fromView = transitionContext.viewController(forKey: .from)!.view!
       let toView = transitionContext.viewController(forKey: .to)!.view!
 
-      let restore = resorationHierarchy(view: toView)
+      let restore = resorationHierarchyForDismissing(toView: toView)
 
       transitionContext.containerView.addSubview(toView)
       transitionContext.containerView.addSubview(fromView)
@@ -211,7 +219,7 @@ enum DismissingTransitionControllers {
       }
 
       animator.addCompletion { _ in
-        restore()
+        restore(true)
         transitionContext.completeTransition(true)
       }
 
@@ -237,7 +245,7 @@ enum DismissingTransitionControllers {
 
       let fromView = fromViewController.view!
       let toView = toViewController.view!
-      let restoreHierarchy = resorationHierarchy(view: toView)
+      let restoreHierarchy = resorationHierarchyForDismissing(toView: toView)
 
       assert(fromView.bounds.width == transitionContext.containerView.bounds.width)
       assert(toView.bounds.width == transitionContext.containerView.bounds.width)
@@ -261,11 +269,6 @@ enum DismissingTransitionControllers {
           /// NavigationBar transition
           toNavigationBar.transform = .init(translationX: fromView.bounds.width, y: 0)
         }
-      }
-
-      func resoreViewStates() {
-        restoreHierarchy()
-        restoreViewProperties()
       }
 
       let animator = UIViewPropertyAnimator(duration: 0.62, dampingRatio: 1) {
@@ -294,14 +297,10 @@ enum DismissingTransitionControllers {
            This must be after `completeTransition`.
            In some cases, the presentation controller removes `toView` after completion. I don't know why 🤷🏻‍♂️.
            */
-          resoreViewStates()
+          restoreHierarchy(true)
+          restoreViewProperties()
         case .start:
-          transitionContext.completeTransition(false)
-          /**
-           This must be after `completeTransition`.
-           In some cases, the presentation controller removes `toView` after completion. I don't know why 🤷🏻‍♂️.
-           */
-          resoreViewStates()
+          preconditionFailure("It never happen")
         @unknown default:
           fatalError()
         }
@@ -325,7 +324,7 @@ enum DismissingInteractiveTransitionControllers {
 
     func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
 
-      Log.debug(.generic, "Start Interactive Transition")
+      Log.debug(.interactive, "Start Interactive Transition")
 
       self.currentTransitionContext = transitionContext
 
@@ -338,7 +337,7 @@ enum DismissingInteractiveTransitionControllers {
       let fromView = fromViewController.view!
       let toView = toViewController.view!
 
-      let restoreHierarchy = resorationHierarchy(view: toView)
+      let restoreHierarchy = resorationHierarchyForDismissing(toView: toView)
 
       assert(fromView.bounds.width == transitionContext.containerView.bounds.width)
       assert(toView.bounds.width == transitionContext.containerView.bounds.width)
@@ -364,11 +363,6 @@ enum DismissingInteractiveTransitionControllers {
         }
       }
 
-      func restoreViewStates() {
-        restoreHierarchy()
-        restoreViewProperties()
-      }
-
       let animator = UIViewPropertyAnimator(duration: 0.62, dampingRatio: 1) {
 
         if let fromNavigationBar = fromNavigationBar, let toNavigationBar = toNavigationBar {
@@ -390,21 +384,24 @@ enum DismissingInteractiveTransitionControllers {
           // TODO: ???
           break
         case .end:
+
           transitionContext.finishInteractiveTransition()
           transitionContext.completeTransition(true)
+
           /**
            This must be after `completeTransition`.
            In some cases, the presentation controller removes `toView` after completion. I don't know why 🤷🏻‍♂️.
            */
-          restoreViewStates()
+          restoreHierarchy(true)
+          restoreViewProperties()
+
         case .start:
+
           transitionContext.cancelInteractiveTransition()
           transitionContext.completeTransition(false)
-          /**
-           This must be after `completeTransition`.
-           In some cases, the presentation controller removes `toView` after completion. I don't know why 🤷🏻‍♂️.
-           */
-          restoreViewStates()
+
+          restoreHierarchy(false)
+          restoreViewProperties()
         @unknown default:
           fatalError()
         }

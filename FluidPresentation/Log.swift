@@ -42,5 +42,13 @@ extension OSLog {
     #endif
   }()
 
+  static let interactive: OSLog = {
+    #if DEBUG
+    return OSLog.init(subsystem: "FluidViewController", category: "interactive")
+    #else
+    return .disabled
+    #endif
+  }()
+
 }
 
