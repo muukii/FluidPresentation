@@ -1,4 +1,4 @@
-# FluidPresentation
+# FluidPresentation - no more handling presented or pushed in view controller
 
 A view controller that supports the interactive dismissal by edge pan gesture or screen pan gesture from modal presentation.
 
