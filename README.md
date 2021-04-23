@@ -7,7 +7,7 @@ A view controller that supports the interactive dismissal by edge pan gesture or
 |![CleanShot 2021-04-24 at 00 26 38](https://user-images.githubusercontent.com/1888355/115894190-f2778900-a493-11eb-8795-3dcaddc6f380.gif)|![CleanShot 2021-04-24 at 00 26 14](https://user-images.githubusercontent.com/1888355/115894209-f7d4d380-a493-11eb-89a7-fad3eddf0433.gif)|
 
 
-## Motivation - what about UINavigationController?
+## Motivation - Using UINavigationController make the app complicated.
 
 ### 🤷🏻‍♂️ View Controller would be displayed in push and modal.
 
