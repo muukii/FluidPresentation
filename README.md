@@ -26,6 +26,31 @@ However, even this pattern, it's hard to manage pushing and presenting view cont
 
 WIP
 
+## Usage
+
+### Create a view controller by subclassing from `FluidViewController`.
+
+```swift
+final class YourViewController: FluidViewController {
+
+}
+```
+
+```swift
+let viewController: YourViewController
+present(viewController, animated: true, completion: nil)
+```
+
+### Present your own view controller by wraping with `FluidViewController`.
+
+```swift
+let viewController: YourViewController
+
+let fluidViewController = FluidViewController(idiom: .presentation, bodyViewController: viewController)
+
+present(fluidViewController, animated: true, completion: nil)
+```
+
 ## License
 
 FluidPresentation is released under the MIT license.
