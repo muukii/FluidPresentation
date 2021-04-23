@@ -75,6 +75,21 @@ let fluidViewController = FluidViewController(idiom: .navigationPush(), bodyView
 present(fluidViewController, animated: true, completion: nil)
 ```
 
+### Using NavigationBar for view controller's navigationItem
+
+`NavigatedFluidViewController` displays `UINavigationBar` as standalone using the view controller's `navigationItem`.
+
+> ☝️ NavigationBar transitions as cross-dissolve if previous or next view controller is the type of `NavigatedFluidViewController`.  
+> That makes the user can feel like using basic navigation system.
+
+```swift
+let viewController: YourViewController
+
+let fluidViewController = NavigatedFluidViewController(idiom: .navigationPush(), bodyViewController: viewController)
+
+present(fluidViewController, animated: true, completion: nil)
+```
+
 ## License
 
 FluidPresentation is released under the MIT license.
