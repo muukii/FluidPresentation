@@ -36,17 +36,41 @@ final class YourViewController: FluidViewController {
 }
 ```
 
+**Presentation style**
+
 ```swift
 let viewController: YourViewController
 present(viewController, animated: true, completion: nil)
 ```
 
+**Navigation style**
+
+```swift
+let viewController: YourViewController
+
+viewController.setIdiom(.navigationPush())
+
+present(viewController, animated: true, completion: nil)
+```
+
 ### Present your own view controller by wraping with `FluidViewController`.
+
+**Presentation style**
 
 ```swift
 let viewController: YourViewController
 
 let fluidViewController = FluidViewController(idiom: .presentation, bodyViewController: viewController)
+
+present(fluidViewController, animated: true, completion: nil)
+```
+
+**Navigation style**
+
+```swift
+let viewController: YourViewController
+
+let fluidViewController = FluidViewController(idiom: .navigationPush(), bodyViewController: viewController)
 
 present(fluidViewController, animated: true, completion: nil)
 ```
