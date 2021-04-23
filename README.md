@@ -9,7 +9,7 @@ A view controller that supports the interactive dismissal by edge pan gesture or
 
 ## Motivation - what about UINavigationController?
 
-### View Controller would be displayed in push and modal.
+### 🤷🏻‍♂️ View Controller would be displayed in push and modal.
 
 Against the small application, a big application abolutely have a tons of transitions between view controllers.  
 In addition, the view controller migth be presented in navigation controller or modal presentation.  
@@ -17,12 +17,12 @@ Which means that should support the both of presentations.
 
 And also `self.navigationController?.push` is not safe operation. (under the dependencies the context.)
 
-### What about Coordinator pattern?
+### 🙅‍♂️ What about Coordinator pattern?
 
 Coordinator-pattern's purpose is solving those problems from complex transitions.
 However, even this pattern, it's hard to manage pushing and presenting view controller corresponding to the context.
 
-### So, FluidPresentation stop us to use `push`, instead only uses `present`.
+### 🙋‍♂️ So, FluidPresentation stop us to use `push`, instead only uses `present`.
 
 FluidPresentation provides `FluidViewController` as a primitive component.  
 It does animation like push or presentation in modal presentation transitioning.
