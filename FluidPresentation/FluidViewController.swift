@@ -95,6 +95,14 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   // MARK: - Properties
 
+  public override var childForStatusBarStyle: UIViewController? {
+    return bodyViewController
+  }
+
+  public override var childForStatusBarHidden: UIViewController? {
+    return bodyViewController
+  }
+
   public let bodyViewController: UIViewController?
 
   @available(*, unavailable, message: "Unsupported")
