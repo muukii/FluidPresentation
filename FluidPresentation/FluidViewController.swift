@@ -381,33 +381,48 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-    switch presentingTransition {
-    case .custom(let transitionController):
-      return transitionController()
-    case .slideIn(let from):
-      switch from {
-      case .bottom:
-        return PresentingTransitionControllers.BottomToTopTransitionController()
-      case .right:
-        return PresentingTransitionControllers.RightToLeftTransitionController()
+    switch modalPresentationStyle {
+    case .fullScreen, .currentContext, .overFullScreen, .overCurrentContext:
+      switch presentingTransition {
+      case .custom(let transitionController):
+        return transitionController()
+      case .slideIn(let from):
+        switch from {
+        case .bottom:
+          return PresentingTransitionControllers.BottomToTopTransitionController()
+        case .right:
+          return PresentingTransitionControllers.RightToLeftTransitionController()
+        }
       }
+    case .pageSheet, .formSheet, .custom, .popover, .none, .automatic:
+      return nil
+    @unknown default:
+      return nil
     }
 
   }
 
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
-    switch dismissingTransition {
-    case .custom(let transitionController):
-      return transitionController()
-    case .slideOut(let to):
-      switch to {
-      case .bottom:
-        return DismissingTransitionControllers.TopToBottomTransitionController()
-      case .right:
-        return DismissingTransitionControllers.LeftToRightTransitionController()
+    switch modalPresentationStyle {
+    case .fullScreen, .currentContext, .overFullScreen, .overCurrentContext:
+      switch dismissingTransition {
+      case .custom(let transitionController):
+        return transitionController()
+      case .slideOut(let to):
+        switch to {
+        case .bottom:
+          return DismissingTransitionControllers.TopToBottomTransitionController()
+        case .right:
+          return DismissingTransitionControllers.LeftToRightTransitionController()
+        }
       }
+    case .pageSheet, .formSheet, .custom, .popover, .none, .automatic:
+      return nil
+    @unknown default:
+      return nil
     }
+
   }
 
   public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
