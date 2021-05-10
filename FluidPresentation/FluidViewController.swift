@@ -154,6 +154,7 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
     modalPresentationStyle = .fullScreen
     transitioningDelegate = self
+    modalPresentationCapturesStatusBarAppearance = true
   }
 
   @available(*, unavailable)
