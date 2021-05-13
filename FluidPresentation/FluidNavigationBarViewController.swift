@@ -22,12 +22,16 @@
 import Foundation
 import UIKit
 
+/**
+ A extended view controller from FluidViewController.
+ Witch has a standalone UINavigationBar that displays navigationItem from itself or bodyViewController.
+ */
 open class NavigatedFluidViewController: FluidViewController, UINavigationBarDelegate {
 
   public let navigationBar: UINavigationBar
 
   public init(
-    idiom: Idiom? = nil,
+    idiom: Idiom? = nil,    
     bodyViewController: UIViewController? = nil,
     navigationBarClass: UINavigationBar.Type = UINavigationBar.self
   ) {
