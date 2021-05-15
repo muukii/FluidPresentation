@@ -22,21 +22,41 @@
 import Foundation
 import UIKit
 
-/**
- A extended view controller from FluidViewController.
- Witch has a standalone UINavigationBar that displays navigationItem from itself or bodyViewController.
- */
+/// A extended view controller from FluidViewController.
+/// Witch has a standalone UINavigationBar that displays navigationItem from itself or bodyViewController.
 open class NavigatedFluidViewController: FluidViewController, UINavigationBarDelegate {
 
   public let navigationBar: UINavigationBar
 
   public init(
-    idiom: Idiom? = nil,    
+    idiom: Idiom = .presentation,
     bodyViewController: UIViewController? = nil,
+    unwindBarButtonItem: UIBarButtonItem? = nil,
     navigationBarClass: UINavigationBar.Type = UINavigationBar.self
   ) {
     self.navigationBar = navigationBarClass.init()
     super.init(idiom: idiom, bodyViewController: bodyViewController)
+
+    let _unwindBarButtonItem = unwindBarButtonItem ?? {
+      let button: UIBarButtonItem
+
+      switch idiom {
+      case .navigationPush:
+        button = .init(barButtonSystemItem: .init(rawValue: 101)!, target: nil, action: nil)
+      case .presentation:
+        button = .init(title: "Dismiss", style: .plain, target: nil, action: nil)
+      }
+      return button
+    }()
+
+    _unwindBarButtonItem.target = self
+    _unwindBarButtonItem.action = #selector(_onTapUnwindButton)
+
+    if let bodyViewController = bodyViewController {
+      bodyViewController.navigationItem.leftBarButtonItem = _unwindBarButtonItem
+    } else {
+      navigationItem.leftBarButtonItem = _unwindBarButtonItem
+    }
   }
 
   open override func viewDidLoad() {
@@ -59,6 +79,10 @@ open class NavigatedFluidViewController: FluidViewController, UINavigationBarDel
       navigationBar.pushItem(navigationItem, animated: false)
     }
 
+  }
+
+  @objc private func _onTapUnwindButton() {
+    dismiss(animated: true, completion: nil)
   }
 
   open override func viewDidLayoutSubviews() {
