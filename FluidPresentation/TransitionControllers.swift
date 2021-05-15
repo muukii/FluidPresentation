@@ -105,13 +105,23 @@ func _makeResorationClosure(views: [UIView?]) -> () -> Void {
 
 enum PresentingTransitionControllers {
 
-  final class BottomToTopTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
+  final class BottomToTopTransitionController: NSObject, UIViewControllerAnimatedTransitioning,
+    UIViewControllerInteractiveTransitioning
+  {
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+      using transitionContext: UIViewControllerContextTransitioning?
+    ) -> TimeInterval {
       0
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+
+      assertionFailure("Unimplemented")
+
+    }
+
+    func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
 
       let toView = transitionContext.view(forKey: .to)!
 
@@ -124,6 +134,8 @@ enum PresentingTransitionControllers {
       }
 
       animator.addCompletion { _ in
+        transitionContext.updateInteractiveTransition(1)
+        transitionContext.finishInteractiveTransition()
         transitionContext.completeTransition(true)
       }
 
@@ -133,13 +145,22 @@ enum PresentingTransitionControllers {
 
   }
 
-  final class RightToLeftTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
+  final class RightToLeftTransitionController: NSObject, UIViewControllerAnimatedTransitioning,
+    UIViewControllerInteractiveTransitioning
+  {
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+      using transitionContext: UIViewControllerContextTransitioning?
+    ) -> TimeInterval {
       0
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+      assertionFailure()
+
+    }
+
+    func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
 
       let fromViewController = transitionContext.viewController(forKey: .from)!
       let toViewController = transitionContext.viewController(forKey: .to)!
@@ -190,7 +211,6 @@ enum PresentingTransitionControllers {
       }
 
       animator.startAnimation()
-
     }
 
   }
@@ -200,7 +220,9 @@ enum DismissingTransitionControllers {
 
   final class TopToBottomTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+      using transitionContext: UIViewControllerContextTransitioning?
+    ) -> TimeInterval {
       0
     }
 
@@ -231,7 +253,9 @@ enum DismissingTransitionControllers {
 
   final class LeftToRightTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+      using transitionContext: UIViewControllerContextTransitioning?
+    ) -> TimeInterval {
       0
     }
 

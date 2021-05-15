@@ -404,6 +404,29 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   }
 
+  public func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+
+    switch modalPresentationStyle {
+    case .fullScreen, .currentContext, .overFullScreen, .overCurrentContext:
+      switch presentingTransition {
+      case .custom:
+        return nil
+      case .slideIn(let from):
+        switch from {
+        case .bottom:
+          return PresentingTransitionControllers.BottomToTopTransitionController()
+        case .right:
+          return PresentingTransitionControllers.RightToLeftTransitionController()
+        }
+      }
+    case .pageSheet, .formSheet, .custom, .popover, .none, .automatic:
+      return nil
+    @unknown default:
+      return nil
+    }
+
+  }
+
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
     switch modalPresentationStyle {
@@ -426,6 +449,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     }
 
   }
+
+
 
   public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
     if let controller = leftToRightTrackingContext?.controller {
