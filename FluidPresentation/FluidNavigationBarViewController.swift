@@ -37,26 +37,28 @@ open class NavigatedFluidViewController: FluidViewController, UINavigationBarDel
     self.navigationBar = navigationBarClass.init()
     super.init(idiom: idiom, bodyViewController: bodyViewController)
 
-    let _unwindBarButtonItem = unwindBarButtonItem ?? {
-      let button: UIBarButtonItem
+    let targetNavigationItem = bodyViewController?.navigationItem ?? navigationItem
 
-      switch idiom {
-      case .navigationPush:
-        button = .init(barButtonSystemItem: .init(rawValue: 101)!, target: nil, action: nil)
-      case .presentation:
-        button = .init(title: "Dismiss", style: .plain, target: nil, action: nil)
-      }
-      return button
-    }()
+    if targetNavigationItem.leftBarButtonItem == nil {
 
-    _unwindBarButtonItem.target = self
-    _unwindBarButtonItem.action = #selector(_onTapUnwindButton)
+      let _unwindBarButtonItem = unwindBarButtonItem ?? {
+        let button: UIBarButtonItem
 
-    if let bodyViewController = bodyViewController {
-      bodyViewController.navigationItem.leftBarButtonItem = _unwindBarButtonItem
-    } else {
-      navigationItem.leftBarButtonItem = _unwindBarButtonItem
+        switch idiom {
+        case .navigationPush:
+          button = .init(barButtonSystemItem: .init(rawValue: 101)!, target: nil, action: nil)
+        case .presentation:
+          button = .init(title: "Dismiss", style: .plain, target: nil, action: nil)
+        }
+        return button
+      }()
+
+      _unwindBarButtonItem.target = self
+      _unwindBarButtonItem.action = #selector(_onTapUnwindButton)
+      targetNavigationItem.leftBarButtonItem = _unwindBarButtonItem
+
     }
+
   }
 
   open override func viewDidLoad() {
