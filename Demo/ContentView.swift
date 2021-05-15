@@ -100,6 +100,10 @@ struct ContentView: View {
 
           }
           .padding(.horizontal, 20)
+
+          TextField.init("Text", text: .constant("Hello"))
+            .frame(height: 120)
+
           ScrollView(.horizontal, showsIndicators: true) {
             HStack {
               ForEach(0..<10) { (i) in

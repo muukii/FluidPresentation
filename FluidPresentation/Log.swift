@@ -50,5 +50,13 @@ extension OSLog {
     #endif
   }()
 
+  static let transition: OSLog = {
+    #if DEBUG
+    return OSLog.init(subsystem: "FluidViewController", category: "transition")
+    #else
+    return .disabled
+    #endif
+  }()
+
 }
 

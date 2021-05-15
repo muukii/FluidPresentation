@@ -347,7 +347,10 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
           )
 
           scrollController.lockScrolling()
-          dismiss(animated: true, completion: nil)
+          dismiss(animated: true, completion: {
+            /// Transition was completed or cancelled.
+            self.leftToRightTrackingContext = nil
+          })
         }
       }
 
@@ -358,12 +361,10 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
       scrollController.unlockScrolling()
       scrollController.endTracking()
       leftToRightTrackingContext?.handleEnded(gesture: gesture)
-      leftToRightTrackingContext = nil
     case .cancelled, .failed:
       scrollController.unlockScrolling()
       scrollController.endTracking()
       leftToRightTrackingContext?.handleCancel(gesture: gesture)
-      leftToRightTrackingContext = nil
     @unknown default:
       break
     }

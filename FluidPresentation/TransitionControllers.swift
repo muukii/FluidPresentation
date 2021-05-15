@@ -179,7 +179,7 @@ enum PresentingTransitionControllers {
         }
 
         fromView.transform = .init(translationX: -toView.bounds.width, y: 0)
-        fromView.alpha = 0
+        fromView.alpha = 0.02
         toView.transform = .identity
         toView.alpha = 1
       }
@@ -280,7 +280,7 @@ enum DismissingTransitionControllers {
         }
 
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
-        fromView.alpha = 0
+        fromView.alpha = 0.02
         toView.transform = .identity
         toView.alpha = 1
       }
@@ -372,7 +372,10 @@ enum DismissingInteractiveTransitionControllers {
         }
 
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
-        fromView.alpha = 0
+
+        // 0.02 is workaround value to enable grabbing the view from the gesture.
+        // Since, alpha 0 ignores touches.
+        fromView.alpha = 0.02
         toView.transform = .identity
         toView.alpha = 1
       }
@@ -385,6 +388,7 @@ enum DismissingInteractiveTransitionControllers {
           break
         case .end:
 
+          transitionContext.updateInteractiveTransition(1)
           transitionContext.finishInteractiveTransition()
           transitionContext.completeTransition(true)
 
@@ -397,6 +401,7 @@ enum DismissingInteractiveTransitionControllers {
 
         case .start:
 
+          transitionContext.updateInteractiveTransition(0)
           transitionContext.cancelInteractiveTransition()
           transitionContext.completeTransition(false)
 
@@ -453,7 +458,7 @@ enum DismissingInteractiveTransitionControllers {
     }
 
     func updateProgress(_ progress: CGFloat) {
-      //      Log.debug(.generic, "Update progress")
+      Log.debug(.generic, "Update progress")
 
       guard
         let context = currentTransitionContext,
