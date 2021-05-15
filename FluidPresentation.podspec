@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = "FluidPresentation"
-  s.version = "1.0.0"
+  s.version = "0.1.0"
   s.summary = "Presentation-based view controller which can unwind by any gestures."
 
   s.homepage = "https://github.com/eure/FluidPresentation"
