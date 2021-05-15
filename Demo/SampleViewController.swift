@@ -47,7 +47,7 @@ final class SampleViewController: FluidViewController {
             present(controller, animated: true, completion: nil)
           case .pushNavigationBar:
             let controller = NavigatedFluidViewController(
-              idiom: .navigationPush(),
+              idiom: .navigationPush,
               bodyViewController: SampleViewController()
             )
             controller.setIdiom(.navigationPush(isScreenGestureEnabled: true))

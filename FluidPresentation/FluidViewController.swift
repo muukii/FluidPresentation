@@ -27,7 +27,11 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   /// Indicating the transition how it animates.
   public enum Idiom {
     case presentation
-    case navigationPush(isScreenGestureEnabled: Bool = false)
+    case navigationPush(isScreenGestureEnabled: Bool)
+
+    public static var navigationPush: Self {
+      .navigationPush(isScreenGestureEnabled: false)
+    }
   }
 
   /**
