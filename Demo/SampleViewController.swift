@@ -82,4 +82,11 @@ final class SampleViewController: FluidViewController {
     view.addSubview(hosting.view)
     hosting.view.edgesToSuperview()
   }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    print("Presented => \(String(describing: presentedViewController))")
+    print("Presenting => \(String(describing: presentingViewController))")
+  }
 }

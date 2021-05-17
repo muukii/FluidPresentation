@@ -22,7 +22,7 @@ final class AppOtherController: StackScrollNodeViewController {
 
       Components.makeSelectionCell(title: "Open", onTap: { [unowned self] in
 
-        let controller = AppNotificationController().wrappingNavigatedFluidViewController(idiom: .navigationPush())
+        let controller = AppNotificationController().wrappingNavigatedFluidViewController(idiom: .navigationPush)
 
         controller.dismissingInteractions = [.init(trigger: .screen, startFrom: .left)]
 
