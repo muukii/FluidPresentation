@@ -97,6 +97,7 @@ present(fluidViewController, animated: true, completion: nil)
 ## Technical information
 
 https://developer.apple.com/videos/play/wwdc2013/218/
+https://developer.apple.com/videos/play/tech-talks/10869/
 
 ## License
 
