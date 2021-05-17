@@ -94,6 +94,10 @@ let fluidViewController = NavigatedFluidViewController(idiom: .navigationPush(),
 present(fluidViewController, animated: true, completion: nil)
 ```
 
+## Technical information
+
+https://developer.apple.com/videos/play/wwdc2013/218/
+
 ## License
 
 FluidPresentation is released under the MIT license.
