@@ -351,7 +351,10 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
           )
 
           scrollController.lockScrolling()
-          dismiss(animated: true, completion: nil)
+          dismiss(animated: true, completion: {
+            /// Transition was completed or cancelled.
+            self.leftToRightTrackingContext = nil
+          })
         }
       }
 
@@ -362,12 +365,10 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
       scrollController.unlockScrolling()
       scrollController.endTracking()
       leftToRightTrackingContext?.handleEnded(gesture: gesture)
-      leftToRightTrackingContext = nil
     case .cancelled, .failed:
       scrollController.unlockScrolling()
       scrollController.endTracking()
       leftToRightTrackingContext?.handleCancel(gesture: gesture)
-      leftToRightTrackingContext = nil
     @unknown default:
       break
     }
@@ -407,6 +408,29 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   }
 
+  public func interactionControllerForPresentation(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
+
+    switch modalPresentationStyle {
+    case .fullScreen, .currentContext, .overFullScreen, .overCurrentContext:
+      switch presentingTransition {
+      case .custom:
+        return nil
+      case .slideIn(let from):
+        switch from {
+        case .bottom:
+          return PresentingTransitionControllers.BottomToTopTransitionController()
+        case .right:
+          return PresentingTransitionControllers.RightToLeftTransitionController()
+        }
+      }
+    case .pageSheet, .formSheet, .custom, .popover, .none, .automatic:
+      return nil
+    @unknown default:
+      return nil
+    }
+
+  }
+
   public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 
     switch modalPresentationStyle {
@@ -429,6 +453,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
     }
 
   }
+
+
 
   public func interactionControllerForDismissal(using animator: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
     if let controller = leftToRightTrackingContext?.controller {

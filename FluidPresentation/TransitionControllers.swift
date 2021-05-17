@@ -105,13 +105,23 @@ func _makeResorationClosure(views: [UIView?]) -> () -> Void {
 
 enum PresentingTransitionControllers {
 
-  final class BottomToTopTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
+  final class BottomToTopTransitionController: NSObject, UIViewControllerAnimatedTransitioning,
+    UIViewControllerInteractiveTransitioning
+  {
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+      using transitionContext: UIViewControllerContextTransitioning?
+    ) -> TimeInterval {
       0
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+
+      assertionFailure("Unimplemented")
+
+    }
+
+    func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
 
       let toView = transitionContext.view(forKey: .to)!
 
@@ -124,6 +134,8 @@ enum PresentingTransitionControllers {
       }
 
       animator.addCompletion { _ in
+        transitionContext.updateInteractiveTransition(1)
+        transitionContext.finishInteractiveTransition()
         transitionContext.completeTransition(true)
       }
 
@@ -133,13 +145,22 @@ enum PresentingTransitionControllers {
 
   }
 
-  final class RightToLeftTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
+  final class RightToLeftTransitionController: NSObject, UIViewControllerAnimatedTransitioning,
+    UIViewControllerInteractiveTransitioning
+  {
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+      using transitionContext: UIViewControllerContextTransitioning?
+    ) -> TimeInterval {
       0
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+      assertionFailure()
+
+    }
+
+    func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
 
       let fromViewController = transitionContext.viewController(forKey: .from)!
       let toViewController = transitionContext.viewController(forKey: .to)!
@@ -179,7 +200,7 @@ enum PresentingTransitionControllers {
         }
 
         fromView.transform = .init(translationX: -toView.bounds.width, y: 0)
-        fromView.alpha = 0
+        fromView.alpha = 0.02
         toView.transform = .identity
         toView.alpha = 1
       }
@@ -190,7 +211,6 @@ enum PresentingTransitionControllers {
       }
 
       animator.startAnimation()
-
     }
 
   }
@@ -200,7 +220,9 @@ enum DismissingTransitionControllers {
 
   final class TopToBottomTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+      using transitionContext: UIViewControllerContextTransitioning?
+    ) -> TimeInterval {
       0
     }
 
@@ -231,7 +253,9 @@ enum DismissingTransitionControllers {
 
   final class LeftToRightTransitionController: NSObject, UIViewControllerAnimatedTransitioning {
 
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+    func transitionDuration(
+      using transitionContext: UIViewControllerContextTransitioning?
+    ) -> TimeInterval {
       0
     }
 
@@ -280,7 +304,7 @@ enum DismissingTransitionControllers {
         }
 
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
-        fromView.alpha = 0
+        fromView.alpha = 0.02
         toView.transform = .identity
         toView.alpha = 1
       }
@@ -372,7 +396,10 @@ enum DismissingInteractiveTransitionControllers {
         }
 
         fromView.transform = .init(translationX: fromView.bounds.width, y: 0)
-        fromView.alpha = 0
+
+        // 0.02 is workaround value to enable grabbing the view from the gesture.
+        // Since, alpha 0 ignores touches.
+        fromView.alpha = 0.02
         toView.transform = .identity
         toView.alpha = 1
       }
@@ -385,6 +412,7 @@ enum DismissingInteractiveTransitionControllers {
           break
         case .end:
 
+          transitionContext.updateInteractiveTransition(1)
           transitionContext.finishInteractiveTransition()
           transitionContext.completeTransition(true)
 
@@ -397,6 +425,7 @@ enum DismissingInteractiveTransitionControllers {
 
         case .start:
 
+          transitionContext.updateInteractiveTransition(0)
           transitionContext.cancelInteractiveTransition()
           transitionContext.completeTransition(false)
 
@@ -453,7 +482,7 @@ enum DismissingInteractiveTransitionControllers {
     }
 
     func updateProgress(_ progress: CGFloat) {
-      //      Log.debug(.generic, "Update progress")
+      Log.debug(.generic, "Update progress")
 
       guard
         let context = currentTransitionContext,
