@@ -23,6 +23,11 @@ import UIKit
 
 extension FluidViewController {
 
+  /**
+   Presents this view controller in the view controller as contextually.
+   The presenting view controller must be a presentation context.
+   Make sure the view controller is the presentation context with `UIViewController.definesPresentationContext`.
+   */
   @discardableResult
   public func present(
     in presentingViewController: UIViewController,
@@ -38,7 +43,7 @@ extension FluidViewController {
       """
     )
 
-    modalPresentationStyle = .currentContext
+    modalPresentationStyle = wantsTransparentBackground ? .overCurrentContext : .currentContext
 
     presentingViewController
       .present(
@@ -50,11 +55,22 @@ extension FluidViewController {
     return self
   }
 
+  /**
+   Presents this view controller as full screen.
+   Technically, `modalPresentationStyle` would be set `.overFullScreen` or `fullScreen`.
+   Which would be used depends on `wantsTransparentBackground`
+
+   How's finding the presenting view controller.
+   - a child view controller forwards calling `present` to the parent view controller.
+   */
+  @discardableResult
   public func present(
     from presentingViewController: UIViewController,
     animated: Bool,
     completion: (() -> Void)?
-  ) {
+  ) -> Self  {
+
+    modalPresentationStyle = wantsTransparentBackground ? .overFullScreen : .fullScreen
 
     presentingViewController
       .present(
@@ -63,5 +79,6 @@ extension FluidViewController {
         completion: completion
       )
 
+    return self
   }
 }

@@ -99,6 +99,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
 
   // MARK: - Properties
 
+  public var wantsTransparentBackground: Bool = false
+
   public override var childForStatusBarStyle: UIViewController? {
     return bodyViewController
   }
