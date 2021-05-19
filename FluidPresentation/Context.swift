@@ -23,17 +23,34 @@ import UIKit
 
 extension FluidViewController {
 
+  public var fluidContext: FluidPresentationContext {
+    .init(presentedViewController: self)
+  }
+
+}
+
+public struct FluidPresentationContext {
+
+  public let presentedViewController: FluidViewController
+
+  init(presentedViewController: FluidViewController) {
+    self.presentedViewController = presentedViewController
+  }
+
+}
+
+extension FluidPresentationContext {
+
   /**
    Presents this view controller in the view controller as contextually.
    The presenting view controller must be a presentation context.
    Make sure the view controller is the presentation context with `UIViewController.definesPresentationContext`.
    */
-  @discardableResult
   public func present(
     in presentingViewController: UIViewController,
     animated: Bool,
     completion: (() -> Void)?
-  ) -> Self {
+  ) {
 
     assert(
       presentingViewController.definesPresentationContext == true,
@@ -43,16 +60,15 @@ extension FluidViewController {
       """
     )
 
-    modalPresentationStyle = wantsTransparentBackground ? .overCurrentContext : .currentContext
+    presentedViewController.modalPresentationStyle = presentedViewController.wantsTransparentBackground ? .overCurrentContext : .currentContext
 
     presentingViewController
       .present(
-        self,
+        presentedViewController,
         animated: animated,
         completion: completion
       )
 
-    return self
   }
 
   /**
@@ -63,22 +79,20 @@ extension FluidViewController {
    How's finding the presenting view controller.
    - a child view controller forwards calling `present` to the parent view controller.
    */
-  @discardableResult
   public func present(
     from presentingViewController: UIViewController,
     animated: Bool,
     completion: (() -> Void)?
-  ) -> Self  {
+  ) {
 
-    modalPresentationStyle = wantsTransparentBackground ? .overFullScreen : .fullScreen
+    presentedViewController.modalPresentationStyle = presentedViewController.wantsTransparentBackground ? .overFullScreen : .fullScreen
 
     presentingViewController
       .present(
-        self,
+        presentedViewController,
         animated: animated,
         completion: completion
       )
 
-    return self
   }
 }
