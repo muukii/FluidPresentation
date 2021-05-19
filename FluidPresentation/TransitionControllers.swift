@@ -123,6 +123,8 @@ enum PresentingTransitionControllers {
 
     func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
 
+      transitionContext.logDebug()
+
       let toView = transitionContext.view(forKey: .to)!
 
       transitionContext.containerView.addSubview(toView)
@@ -161,6 +163,8 @@ enum PresentingTransitionControllers {
     }
 
     func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
+
+      transitionContext.logDebug()
 
       let fromViewController = transitionContext.viewController(forKey: .from)!
       let toViewController = transitionContext.viewController(forKey: .to)!
@@ -228,6 +232,8 @@ enum DismissingTransitionControllers {
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
 
+      transitionContext.logDebug()
+
       let fromView = transitionContext.viewController(forKey: .from)!.view!
       let toView = transitionContext.viewController(forKey: .to)!.view!
 
@@ -260,6 +266,8 @@ enum DismissingTransitionControllers {
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+
+      transitionContext.logDebug()
 
       let fromViewController = transitionContext.viewController(forKey: .from)!
       let toViewController = transitionContext.viewController(forKey: .to)!
@@ -348,6 +356,7 @@ enum DismissingInteractiveTransitionControllers {
 
     func startInteractiveTransition(_ transitionContext: UIViewControllerContextTransitioning) {
 
+      transitionContext.logDebug()
       Log.debug(.interactive, "Start Interactive Transition")
 
       self.currentTransitionContext = transitionContext
@@ -500,4 +509,12 @@ enum DismissingInteractiveTransitionControllers {
 
   }
 
+}
+
+
+extension UIViewControllerContextTransitioning {
+
+  func logDebug() {
+    Log.debug(.transition, "fromVC:\(viewController(forKey: .from)), toVC: \(viewController(forKey: .to))")
+  }
 }
