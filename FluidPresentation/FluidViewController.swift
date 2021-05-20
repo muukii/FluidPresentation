@@ -175,6 +175,8 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
   open override func viewDidLoad() {
     super.viewDidLoad()
 
+    view.accessibilityIdentifier = "\(type(of: self))"
+
     setupGestures()
 
     if let bodyViewController = bodyViewController {
@@ -188,6 +190,12 @@ open class FluidViewController: UIViewController, UIViewControllerTransitioningD
       ])
       bodyViewController.didMove(toParent: self)
     }
+  }
+
+  open override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+
+    Log.debug(.transition, "ViewDidAppear \(self), presenting: \(self.presentingViewController as Any)")
   }
 
   /// Set presenting and dismissing transition according to the idiom

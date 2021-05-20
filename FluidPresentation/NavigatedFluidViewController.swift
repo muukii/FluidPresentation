@@ -64,6 +64,7 @@ open class NavigatedFluidViewController: FluidViewController, UINavigationBarDel
   open override func viewDidLoad() {
     super.viewDidLoad()
 
+    view.clipsToBounds = true
     view.addSubview(navigationBar)
 
     navigationBar.translatesAutoresizingMaskIntoConstraints = false
