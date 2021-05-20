@@ -31,6 +31,7 @@ struct ContentView: View {
     case pushNavigationBar
     case pushInCurrentContext
     case present
+    case presentOverFullScreen
     case presentInCurrentContext
     case presentInOverCurrentContext
     case makePresentationContext(Bool)
@@ -88,6 +89,10 @@ struct ContentView: View {
 
             Button("Present - FullScreen") {
               onAction(.present)
+            }
+
+            Button("Present - OverFullScreen") {
+              onAction(.presentOverFullScreen)
             }
 
             Button("Present - CurrentContext") {

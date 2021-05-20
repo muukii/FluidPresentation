@@ -61,6 +61,11 @@ final class SampleViewController: FluidViewController {
             let controller = SampleViewController()
             controller.setIdiom(.presentation)
             present(controller, animated: true, completion: nil)
+          case .presentOverFullScreen:
+            let controller = SampleViewController()
+            controller.setIdiom(.presentation)
+            controller.modalPresentationStyle = .overFullScreen
+            present(controller, animated: true, completion: nil)
           case .presentInCurrentContext:
             let controller = SampleViewController()
             controller.modalPresentationStyle = .currentContext

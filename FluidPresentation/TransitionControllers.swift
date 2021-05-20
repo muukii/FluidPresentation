@@ -125,9 +125,22 @@ enum PresentingTransitionControllers {
 
       transitionContext.logDebug()
 
-      let toView = transitionContext.view(forKey: .to)!
+      let fromViewController = transitionContext.viewController(forKey: .from)!
+      let toViewController = transitionContext.viewController(forKey: .to)!
+
+      let fromView = fromViewController.view!
+      let toView = toViewController.view!
+
+      switch transitionContext.presentationStyle {
+      case .overFullScreen, .overCurrentContext:
+        assert(fromView.superview != nil)
+      default:
+        transitionContext.containerView.addSubview(fromView)
+      }
 
       transitionContext.containerView.addSubview(toView)
+
+      toView.frame = transitionContext.finalFrame(for: toViewController)
 
       toView.transform = .init(translationX: 0, y: toView.bounds.height)
 
@@ -176,6 +189,17 @@ enum PresentingTransitionControllers {
       let toView = toViewController.view!
 
       transitionContext.containerView.backgroundColor = .white
+
+      var restoreForFromView: ((Bool) -> Void)? = nil
+
+      switch transitionContext.presentationStyle {
+      case .overFullScreen, .overCurrentContext:
+        assert(fromView.superview != nil)
+        restoreForFromView = resorationHierarchyForDismissing(toView: fromView)
+      default:
+        break
+      }
+
       transitionContext.containerView.addSubview(fromView)
       transitionContext.containerView.addSubview(toView)
 
@@ -212,6 +236,7 @@ enum PresentingTransitionControllers {
       animator.addCompletion { _ in
         restoration()
         transitionContext.completeTransition(true)
+        restoreForFromView?(true)
       }
 
       animator.startAnimation()
@@ -234,12 +259,19 @@ enum DismissingTransitionControllers {
 
       transitionContext.logDebug()
 
-      let fromView = transitionContext.viewController(forKey: .from)!.view!
-      let toView = transitionContext.viewController(forKey: .to)!.view!
+      let fromViewController = transitionContext.viewController(forKey: .from)!
+      let toViewController = transitionContext.viewController(forKey: .to)!
 
-      let restore = resorationHierarchyForDismissing(toView: toView)
+      let fromView = fromViewController.view!
+      let toView = toViewController.view!
 
-      transitionContext.containerView.addSubview(toView)
+      switch transitionContext.presentationStyle {
+      case .overFullScreen, .overCurrentContext:
+        assert(toView.superview != nil)
+      default:
+        transitionContext.containerView.addSubview(toView)
+      }
+
       transitionContext.containerView.addSubview(fromView)
 
       let animator = UIViewPropertyAnimator(duration: 0.55, dampingRatio: 1) {
@@ -247,7 +279,6 @@ enum DismissingTransitionControllers {
       }
 
       animator.addCompletion { _ in
-        restore(true)
         transitionContext.completeTransition(true)
       }
 
